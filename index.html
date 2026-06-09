@@ -500,7 +500,7 @@
 
 <script>
   const IS_PREVIEW = false; 
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbyDy34VoXoDiisfwMJdZ-BAF3ObV7VEkOlnaSK7Nkd9lVabz-mW0NPNpGrT6fMFbmn2/exec";
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbyBTFEVdvaX6hsgvF27sdGA5ZaUHisGpaoH0BK3vEum5DhLp4ty4CgD7-PrrMX1A6fV/exec";
 
   let sessionToken = null; let sessionRole = null; let sessionGenerasi = ''; let loginRole = 'admin';
   let currentStep = 1; let svg, g, zoom, root; let treeUpdate = null; let allExpanded = false; let anakCount = 0; let newPhotoData = ""; let oldPhotoUrl = ""; let searchIndex = [];
@@ -673,6 +673,53 @@
     }
 
     window.google.script.run = new MockRunner();
+  } else if (!IS_PREVIEW && (!window.google || !window.google.script || !window.google.script.run)) {
+    // JEMBATAN API UNTUK BLOGGER (API RUNNER)
+    if (!window.google) window.google = {};
+    if (!window.google.script) window.google.script = {};
+    
+    class ApiRunner {
+      constructor(successCb = null, errorCb = null) {
+        this.successCb = successCb;
+        this.errorCb = errorCb;
+      }
+      withSuccessHandler(cb) { return new ApiRunner(cb, this.errorCb); }
+      withFailureHandler(cb) { return new ApiRunner(this.successCb, cb); }
+
+      _call(action, params) {
+        if (!GAS_URL) return console.error("GAS_URL kosong!");
+        
+        fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: action, params: params }),
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error && this.errorCb) this.errorCb(new Error(data.error));
+          else if (this.successCb) this.successCb(data.result);
+        })
+        .catch(err => {
+          console.error("API Error:", err);
+          if (this.errorCb) this.errorCb(err);
+        });
+      }
+
+      validateSession(token) { this._call('validateSession', [token]); }
+      checkPassword(pwd, role, gen) { this._call('checkPassword', [pwd, role, gen]); }
+      logout(token) { this._call('logout', [token]); }
+      getDashboardStats() { this._call('getDashboardStats', []); }
+      getGenerasiList() { this._call('getGenerasiList', []); }
+      getParentsList(gen) { this._call('getParentsList', [gen]); }
+      getSearchIndex() { this._call('getSearchIndex', []); }
+      getFamilyTreeData() { this._call('getFamilyTreeData', []); }
+      processForm(data, token) { this._call('processForm', [data, token]); }
+      getMemberById(id) { this._call('getMemberById', [id]); }
+      deleteMember(id, token) { this._call('deleteMember', [id, token]); }
+      changePassword(token, oldP, newP) { this._call('changePassword', [token, oldP, newP]); }
+    }
+    
+    window.google.script.run = new ApiRunner();
   }
 
   function getDisplayUrl(url) {
