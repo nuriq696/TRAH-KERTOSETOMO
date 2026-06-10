@@ -463,7 +463,7 @@
 
 <script>
   // ==========================================
-  // --- GENERATOR MANIFEST PWA (BLOGGER / SINGLE FILE) ---
+  // --- GENERATOR MANIFEST PWA 1-FILE ---
   // ==========================================
   const pwaManifest = {
     name: "Silsilah Keluarga Pro",
@@ -480,17 +480,11 @@
   const manifestUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(pwaManifest));
   const linkManifest = document.createElement('link'); linkManifest.rel = 'manifest'; linkManifest.href = manifestUrl; document.head.appendChild(linkManifest);
 
-  // Registrasi Service Worker Dummy untuk pancingan Chrome
-  if ('serviceWorker' in navigator) {
-    // Kita coba register file sw.js, error akan ditangkap dan diabaikan jika file belum ada
-    navigator.serviceWorker.register('/sw.js').catch(e => {});
-  }
-
   // ==========================================
   // --- KONFIGURASI UTAMA ---
   // ==========================================
   const IS_PREVIEW = false; 
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbyBTFEVdvaX6hsgvF27sdGA5ZaUHisGpaoH0BK3vEum5DhLp4ty4CgD7-PrrMX1A6fV/exec"; // PAastikan URL_GAS tidak tertinggal!
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbyBTFEVdvaX6hsgvF27sdGA5ZaUHisGpaoH0BK3vEum5DhLp4ty4CgD7-PrrMX1A6fV/exec"; // PASTIKAN ANDA MENGGANTI URL INI!
 
   let sessionToken = null; let sessionRole = null; let sessionGenerasi = ''; let loginRole = 'admin';
   let currentStep = 1; let svg, g, zoom, root; let treeUpdate = null; let allExpanded = false; let anakCount = 0; let newPhotoData = ""; let oldPhotoUrl = ""; let searchIndex = [];
@@ -900,31 +894,50 @@
   };
   window.hitungWaris = function() { const totalInput = document.getElementById('waris-total').value; if(!totalInput || totalInput <= 0) return toastWarning('Masukkan total harta yang valid!'); const total = parseFloat(totalInput); const psg = document.getElementById('waris-pasangan').value; const al = parseInt(document.getElementById('waris-al').value) || 0; const ap = parseInt(document.getElementById('waris-ap').value) || 0; const bapak = document.getElementById('waris-bapak').checked; const ibu = document.getElementById('waris-ibu').checked; let hasAnak = (al > 0 || ap > 0); let porsi = []; let sisa = 1.0;  if(psg === 'suami') { let p = hasAnak ? 1/4 : 1/2; porsi.push({n:'Suami', p:p}); sisa -= p; } else if(psg.startsWith('istri')) {  let jml = parseInt(psg.replace('istri','')); let p = hasAnak ? 1/8 : 1/4;  porsi.push({n:`Istri (${jml} org)`, p:p, perOrg: p/jml}); sisa -= p;  } if(ibu) { let p = hasAnak ? 1/6 : 1/3; porsi.push({n:'Ibu', p:p}); sisa -= p; } if(bapak) { let p = 1/6; porsi.push({n:'Bapak', p:p}); sisa -= p; }  if(sisa < 0) { let totalP = porsi.reduce((sum, item) => sum + item.p, 0); porsi.forEach(item => item.p = item.p / totalP); sisa = 0; } if(sisa > 0) { if(al > 0) { let totalBagian = (al * 2) + ap; let perBagian = sisa / totalBagian; porsi.push({n:`Anak Lk (${al} org)`, p: perBagian * 2 * al, perOrg: perBagian * 2}); if(ap > 0) porsi.push({n:`Anak Pr (${ap} org)`, p: perBagian * ap, perOrg: perBagian}); } else if (ap > 0) { let p = (ap === 1) ? 1/2 : 2/3; if(p > sisa) p = sisa;  porsi.push({n:`Anak Pr (${ap} org)`, p:p, perOrg: p/ap}); sisa -= p; if(sisa > 0.001 && bapak) { let bItem = porsi.find(x => x.n === 'Bapak'); if(bItem) bItem.p += sisa; } } else if (bapak) { let bItem = porsi.find(x => x.n === 'Bapak'); if(bItem) bItem.p += sisa; } } const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits:0 }).format(num); const formatPecahan = (dec) => { if(Math.abs(dec - 1/8) < 0.01) return "1/8"; if(Math.abs(dec - 1/6) < 0.01) return "1/6"; if(Math.abs(dec - 1/4) < 0.01) return "1/4"; if(Math.abs(dec - 1/3) < 0.01) return "1/3"; if(Math.abs(dec - 1/2) < 0.01) return "1/2"; if(Math.abs(dec - 2/3) < 0.01) return "2/3"; return (dec * 100).toFixed(1) + "%"; }; let html = `<h5 class="font-black text-emerald-900 mb-3 border-b border-emerald-300 pb-2">Hasil Perhitungan</h5>`; if(porsi.length === 0) { html += `<p class="text-sm text-rose-600 font-bold">Tidak ada ahli waris yang memenuhi syarat.</p>`; } else { porsi.forEach(item => { let nominal = item.p * total; html += `<div class="mb-2"><div class="flex justify-between items-end"><span class="font-bold text-slate-700">${item.n} <span class="text-xs text-emerald-600 bg-emerald-100 px-1 rounded ml-1">${formatPecahan(item.p)}</span></span><span class="font-black text-emerald-700 text-lg">${formatRp(nominal)}</span></div>${item.perOrg ? `<p class="text-[10px] text-slate-500 text-right">@ ${formatRp(item.perOrg * total)} / orang</p>` : ''}</div>`; }); } const hasilDiv = document.getElementById('waris-hasil'); hasilDiv.innerHTML = html; hasilDiv.classList.remove('hidden'); hasilDiv.scrollIntoView({ behavior: 'smooth' }); };
 
-  // --- BOOT & PWA ---
+  // --- BOOT & PWA INSTALLER ---
   function bootApp() { loadDashboardStats(); loadGenerasiDropdown(); initializeTree(); setTimeout(() => { const overlay = document.getElementById('loading-overlay'); if (overlay) { overlay.style.opacity = '0'; setTimeout(() => overlay.style.display = 'none', 500); } }, 1500); }
 
   let deferredPrompt;
+  // Menangkap event instalasi native dari Chrome
+  window.addEventListener('beforeinstallprompt', (e) => { 
+    e.preventDefault(); 
+    deferredPrompt = e; 
+    const pwaContainer = document.getElementById('pwa-install-container');
+    const pwaText = document.getElementById('pwa-btn-text');
+    const pwaIcon = document.getElementById('pwa-icon');
+    if (pwaContainer) pwaContainer.classList.remove('hidden');
+    if (pwaText) pwaText.textContent = "Install Aplikasi PWA"; 
+    if (pwaIcon) pwaIcon.className = "fab fa-google-play text-lg text-brand-500";
+  });
+
   function initPWA() {
     const pwaContainer = document.getElementById('pwa-install-container'); const pwaBtn = document.getElementById('pwa-install-btn'); const pwaText = document.getElementById('pwa-btn-text'); const pwaIcon = document.getElementById('pwa-icon');
     if (!pwaContainer || !pwaBtn) return;
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     if (isStandalone) { pwaContainer.classList.add('hidden'); return; }
+    
+    // Tampilkan tombol secara default untuk akses panduan manual/iOS
     pwaContainer.classList.remove('hidden');
+    
     if (isIOS) {
       pwaText.textContent = "Install di iOS (Safari)"; pwaIcon.className = "fab fa-apple text-lg text-slate-500";
       pwaBtn.onclick = () => { Swal.fire({ title: 'Pasang di Layar Utama', html: `Untuk menginstal di perangkat Apple:<br><br>1. Tap ikon <b>Share</b> <i class="fas fa-share-square text-blue-500 mx-1"></i> di menu bawah browser.<br>2. Gulir ke bawah dan pilih <b>"Add to Home Screen"</b> <i class="fas fa-plus-square text-slate-500 mx-1"></i>.`, icon: 'info', confirmButtonText: 'Mengerti', confirmButtonColor: '#10b981', customClass: { popup: 'rounded-3xl text-left' } }); };
     } else {
-      window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; pwaText.textContent = "Install Aplikasi PWA"; pwaIcon.className = "fab fa-google-play text-lg text-brand-500"; });
       pwaBtn.onclick = async () => {
-        if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { pwaContainer.classList.add('hidden'); } deferredPrompt = null; } 
-        else {
-          // --- PERBAIKAN: Beri panduan instalasi manual ---
+        if (deferredPrompt) { 
+          // Memanggil popup asli bawaan Android/Chrome
+          deferredPrompt.prompt(); 
+          const { outcome } = await deferredPrompt.userChoice; 
+          if (outcome === 'accepted') { pwaContainer.classList.add('hidden'); } 
+          deferredPrompt = null; 
+        } else {
+          // --- PANDUAN INSTALASI DINAMIS ---
           Swal.fire({ 
-            title: 'Cara Install Manual', 
-            html: 'Karena limitasi browser, ikuti 3 langkah mudah ini untuk install ke HP Android Anda:<br><br>1. Klik ikon <b>Tiga Titik</b> <i class="fas fa-ellipsis-v text-slate-500 mx-1"></i> di pojok kanan atas browser (Chrome).<br>2. Pilih menu <b>"Tambahkan ke Layar Utama"</b> atau <b>"Install Aplikasi"</b> <i class="fas fa-mobile-alt text-brand-500 mx-1"></i>.<br>3. Klik <b>Tambahkan</b>.', 
+            title: 'Cara Install ke Layar Utama', 
+            html: 'Browser menahan instalasi otomatis. Ikuti 3 langkah mudah ini untuk memasang aplikasi ke HP:<br><br>1. Klik ikon <b>Tiga Titik</b> <i class="fas fa-ellipsis-v text-slate-500 mx-1"></i> di pojok kanan atas browser (Chrome).<br>2. Pilih menu <b>"Tambahkan ke Layar Utama"</b> atau <b>"Install Aplikasi"</b> <i class="fas fa-mobile-alt text-brand-500 mx-1"></i>.<br>3. Klik <b>Tambahkan</b>.', 
             icon: 'info', 
-            confirmButtonText: 'Mengerti',
+            confirmButtonText: 'Oke, Saya Mengerti',
             confirmButtonColor: '#10b981', 
             customClass: { popup: 'rounded-3xl text-left' } 
           }); 
@@ -932,7 +945,12 @@
       };
     }
   }
-  initPWA(); window.addEventListener('appinstalled', () => { const pwaContainer = document.getElementById('pwa-install-container'); if(pwaContainer) pwaContainer.classList.add('hidden'); });
+  
+  // Panggil PWA Init
+  initPWA(); 
+  
+  // Sembunyikan tombol setelah aplikasi sukses terpasang
+  window.addEventListener('appinstalled', () => { const pwaContainer = document.getElementById('pwa-install-container'); if(pwaContainer) pwaContainer.classList.add('hidden'); });
 
 </script>
 </body>
