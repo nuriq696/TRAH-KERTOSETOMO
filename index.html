@@ -46,9 +46,7 @@
     @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     .node rect { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.07)); } .node:hover rect { filter: drop-shadow(0 20px 25px rgba(14, 165, 233, 0.2)); transform: translateY(-4px) scale(1.02); }
     .link { fill: none; stroke-width: 2.5px; transition: all 0.4s; opacity: 0.55; } .link:hover { opacity: 1; stroke-width: 3.5px; } .node text { font-family: 'Inter', sans-serif; pointer-events: none; }
-    .bg-mesh { background-color: #f8fafc; background-image: linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px); background-size: 50px 50px; }
     .stat-card { position: relative; overflow: hidden; transition: all 0.4s; } .stat-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15); }
-    .btn-modern { position: relative; overflow: hidden; transition: all 0.3s ease; }
     .mobile-nav-item.active { color: #16a34a; background: #f0fdf4; transform: translateY(-2px); }
     .font-arabic { font-family: "Amiri", "Traditional Arabic", serif; line-height: 2.2; }
     .shimmer { background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%); background-size: 200% 100%; animation: shimmer 2s infinite; }
@@ -199,34 +197,21 @@
   </div>
 
   <div id="view-tree" class="view-section hidden h-full w-full relative overflow-hidden animate-fade-in" style="background: linear-gradient(160deg, #1a3a1a 0%, #14532d 30%, #166534 60%, #1e4620 100%);">
-    <!-- Dekorasi Daun & Dot -->
     <div style="position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,0.2),transparent);pointer-events:none;"></div>
     <div style="position:absolute;bottom:-60px;left:-60px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,0.15),transparent);pointer-events:none;"></div>
     <div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;"></div>
 
-    <!-- Zoom & Nav Controls -->
     <div class="absolute top-4 left-4 z-20 flex flex-col gap-2">
-      <button onclick="switchTab('dashboard')" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold flex items-center justify-center text-white border border-white/20 transition-all hover:scale-105" style="background:rgba(22, 163, 74, 0.7)" title="Kembali ke Dashboard">
-        <i class="fas fa-arrow-left text-sm"></i>
-      </button>
+      <button onclick="switchTab('dashboard')" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold flex items-center justify-center text-white border border-white/20 transition-all hover:scale-105" style="background:rgba(22, 163, 74, 0.7)" title="Kembali ke Dashboard"><i class="fas fa-arrow-left text-sm"></i></button>
       <div class="border-t border-white/20 mx-1"></div>
-      <button onclick="if(svg && zoom) svg.transition().duration(400).call(zoom.scaleBy,1.3)" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold transition-all active:scale-95 flex items-center justify-center text-white border border-white/20" style="background:rgba(255,255,255,0.15)" title="Zoom in">
-        <i class="fas fa-plus text-sm"></i>
-      </button>
-      <button onclick="if(svg && zoom) svg.transition().duration(400).call(zoom.scaleBy,0.77)" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold transition-all active:scale-95 flex items-center justify-center text-white border border-white/20" style="background:rgba(255,255,255,0.15)" title="Zoom out">
-        <i class="fas fa-minus text-sm"></i>
-      </button>
-      <button onclick="resetZoom()" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold transition-all active:scale-95 flex items-center justify-center text-white border border-white/20" style="background:rgba(255,255,255,0.15)" title="Reset tampilan">
-        <i class="fas fa-expand-arrows-alt text-sm"></i>
-      </button>
+      <button onclick="if(svg && zoom) svg.transition().duration(400).call(zoom.scaleBy,1.3)" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold transition-all active:scale-95 flex items-center justify-center text-white border border-white/20" style="background:rgba(255,255,255,0.15)" title="Zoom in"><i class="fas fa-plus text-sm"></i></button>
+      <button onclick="if(svg && zoom) svg.transition().duration(400).call(zoom.scaleBy,0.77)" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold transition-all active:scale-95 flex items-center justify-center text-white border border-white/20" style="background:rgba(255,255,255,0.15)" title="Zoom out"><i class="fas fa-minus text-sm"></i></button>
+      <button onclick="resetZoom()" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold transition-all active:scale-95 flex items-center justify-center text-white border border-white/20" style="background:rgba(255,255,255,0.15)" title="Reset tampilan"><i class="fas fa-expand-arrows-alt text-sm"></i></button>
       <div class="border-t border-white/20 mx-1"></div>
-      <button id="btn-expand-all" onclick="if(window.toggleExpandAll) window.toggleExpandAll()" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold transition-all active:scale-95 flex items-center justify-center text-white border border-white/20" style="background:rgba(255,255,255,0.15)" title="Buka semua generasi">
-        <i class="fas fa-sitemap text-sm"></i>
-      </button>
+      <button id="btn-expand-all" onclick="if(window.toggleExpandAll) window.toggleExpandAll()" class="w-11 h-11 rounded-2xl backdrop-blur shadow-lg font-bold transition-all active:scale-95 flex items-center justify-center text-white border border-white/20" style="background:rgba(255,255,255,0.15)" title="Buka semua generasi"><i class="fas fa-sitemap text-sm"></i></button>
       <span id="label-expand-all" class="text-white text-center font-bold leading-tight" style="font-size:9px;text-shadow:0 1px 3px rgba(0,0,0,0.5);">Buka<br>Semua</span>
     </div>
 
-    <!-- Legend Panel Kanan Atas -->
     <div class="absolute top-4 right-4 z-20">
       <button onclick="toggleInfoLegend()" class="flex items-center gap-2 backdrop-blur rounded-2xl shadow-lg px-3 py-2.5 text-xs font-bold text-white border border-white/20 transition-all active:scale-95" style="background:rgba(255,255,255,0.15)">
         <i class="fas fa-info-circle"></i><span>Keterangan</span><i id="info-legend-chevron" class="fas fa-chevron-down text-white/60 transition-transform duration-300"></i>
@@ -245,7 +230,6 @@
       </div>
     </div>
 
-    <!-- Gen Legend Kiri Bawah -->
     <div id="gen-legend" class="absolute bottom-24 md:bottom-6 left-4 z-20 hidden">
       <button onclick="toggleGenLegend()" class="flex items-center gap-2 backdrop-blur rounded-2xl shadow-lg px-3 py-2.5 text-xs font-bold text-white border border-white/20 transition-all active:scale-95" style="background:rgba(255,255,255,0.15)">
         <i class="fas fa-palette"></i><span>Warna Generasi</span><i id="gen-legend-chevron" class="fas fa-chevron-up text-white/60 transition-transform duration-300"></i>
@@ -255,44 +239,36 @@
       </div>
     </div>
 
-    <!-- Tombol Tambah Anggota (FAB) -->
     <button onclick="switchTab('form'); resetFormState();" class="admin-only absolute bottom-20 right-4 md:bottom-6 md:right-6 z-30 flex items-center justify-center gap-2 w-14 h-14 md:w-auto md:h-auto md:px-5 md:py-3.5 rounded-full font-bold text-white shadow-2xl transition-transform hover:scale-105 active:scale-95" style="background:linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.5);" title="Tambah Anggota Baru">
       <i class="fas fa-user-plus text-xl md:text-lg"></i>
       <span class="hidden md:inline">Tambah Anggota</span>
     </button>
 
-    <!-- Ground grass decoration -->
     <div style="position:absolute;bottom:0;left:0;right:0;height:60px;pointer-events:none;z-index:1;">
       <svg viewBox="0 0 1200 60" preserveAspectRatio="none" style="width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
         <path d="M0,40 Q150,0 300,30 Q450,60 600,20 Q750,0 900,35 Q1050,60 1200,25 L1200,60 L0,60 Z" fill="rgba(34,197,94,0.15)"/>
         <path d="M0,50 Q200,20 400,45 Q600,60 800,30 Q1000,10 1200,40 L1200,60 L0,60 Z" fill="rgba(34,197,94,0.1)"/>
       </svg>
     </div>
-    <!-- Floating leaf particles -->
     <div style="position:absolute;top:15%;left:5%;font-size:20px;opacity:0.25;animation:float 8s ease-in-out infinite;pointer-events:none;">🍃</div>
     <div style="position:absolute;top:60%;left:92%;font-size:16px;opacity:0.2;animation:float 10s ease-in-out infinite;animation-delay:2s;pointer-events:none;">🌿</div>
     <div style="position:absolute;top:80%;left:8%;font-size:18px;opacity:0.2;animation:float 7s ease-in-out infinite;animation-delay:4s;pointer-events:none;">🍂</div>
 
-    <!-- Tree Container -->
     <div id="tree-container" class="w-full h-full" style="position:relative;z-index:2;"></div>
   </div>
 
   <div id="view-form" class="view-section hidden h-full overflow-y-auto pb-32 animate-fade-in" style="background:linear-gradient(160deg,#f8fafc 0%,#f0fdf4 100%)">
-    
     <style>
       #view-form .step-dot { width: 2rem; height: 2rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; background-color: #f1f5f9; color: #94a3b8; transition: all 0.3s; }
       #view-form .step-dot.active { background-color: #22c55e; color: white; box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.3); transform: scale(1.1); }
     </style>
 
     <div class="max-w-4xl mx-auto px-4 py-8 md:py-12">
-      
-      <!-- Header Standar -->
       <div class="text-center mb-10 animate-slide-up">
         <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-3">Form <span class="gradient-text">Data Keluarga</span></h2>
         <p class="text-slate-500 font-medium md:text-lg">Lengkapi profil anggota keluarga di bawah ini.</p>
       </div>
 
-      <!-- Progress Line Standar -->
       <div class="flex justify-center mb-10">
         <div class="flex items-center gap-2 bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100">
           <div class="step-dot active">1</div><div class="w-8 md:w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-brand-500 w-full rounded-full origin-left transition-transform duration-500"></div></div>
@@ -301,22 +277,16 @@
         </div>
       </div>
 
-      <!-- Form Card Standar -->
       <div class="bg-white rounded-3xl p-6 md:p-10 shadow-xl border border-slate-100 animate-scale-in">
         <form id="familyForm" class="space-y-6">
           <input type="hidden" id="edit-id" name="edit-id" value="">
 
-          <!-- STEP 1 -->
           <div id="step-1" class="space-y-6">
             <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
               <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-black text-lg">1</div>
-              <div>
-                <h3 class="text-xl font-bold text-slate-800">Informasi Dasar</h3>
-                <p class="text-xs text-slate-400">Identitas Utama</p>
-              </div>
+              <div><h3 class="text-xl font-bold text-slate-800">Informasi Dasar</h3><p class="text-xs text-slate-400">Identitas Utama</p></div>
             </div>
 
-            <!-- Upload Foto -->
             <div class="flex flex-col items-center justify-center mb-8">
               <div class="relative cursor-pointer hover:scale-105 transition-transform duration-300" onclick="document.getElementById('input-foto').click()">
                 <div class="w-32 h-32 rounded-full border-4 border-slate-100 shadow-md overflow-hidden bg-slate-50 relative">
@@ -325,9 +295,7 @@
                     <i class="fas fa-camera text-3xl mb-1"></i><span class="text-[10px] font-bold uppercase tracking-wider">Upload Foto</span>
                   </div>
                 </div>
-                <div class="absolute bottom-0 right-0 w-9 h-9 bg-brand-500 rounded-full border-2 border-white text-white flex items-center justify-center shadow">
-                  <i class="fas fa-plus text-sm"></i>
-                </div>
+                <div class="absolute bottom-0 right-0 w-9 h-9 bg-brand-500 rounded-full border-2 border-white text-white flex items-center justify-center shadow"><i class="fas fa-plus text-sm"></i></div>
               </div>
               <p id="file-name" class="text-xs text-center text-slate-500 mt-3 font-medium bg-slate-50 px-3 py-1 rounded-full">Klik untuk pasang foto</p>
               <input type="file" id="input-foto" accept="image/*" class="hidden" onchange="handleFileSelect(this)">
@@ -360,23 +328,15 @@
             </div>
 
             <div class="flex flex-col-reverse sm:flex-row justify-between mt-8 pt-6 gap-4 border-t border-slate-100">
-              <button type="button" onclick="resetFormState(); switchTab('dashboard');" class="bg-slate-100 text-slate-600 px-6 md:px-8 py-3.5 rounded-xl font-bold hover:bg-rose-100 hover:text-rose-600 transition-colors flex items-center justify-center gap-2 w-full sm:w-auto">
-                <i class="fas fa-times"></i> Batal
-              </button>
-              <button type="button" onclick="nextStep(2)" class="bg-brand-500 text-white px-8 md:px-10 py-3.5 rounded-xl font-bold shadow-lg shadow-brand-500/30 hover:bg-brand-600 hover:shadow-brand-500/50 transition-all flex items-center justify-center gap-2 w-full sm:w-auto active:scale-95">
-                Lanjut Langkah 2 <i class="fa-solid fa-arrow-right"></i>
-              </button>
+              <button type="button" onclick="resetFormState(); switchTab('dashboard');" class="bg-slate-100 text-slate-600 px-6 md:px-8 py-3.5 rounded-xl font-bold hover:bg-rose-100 hover:text-rose-600 transition-colors flex items-center justify-center gap-2 w-full sm:w-auto"><i class="fas fa-times"></i> Batal</button>
+              <button type="button" onclick="nextStep(2)" class="bg-brand-500 text-white px-8 md:px-10 py-3.5 rounded-xl font-bold shadow-lg shadow-brand-500/30 hover:bg-brand-600 hover:shadow-brand-500/50 transition-all flex items-center justify-center gap-2 w-full sm:w-auto active:scale-95">Lanjut Langkah 2 <i class="fa-solid fa-arrow-right"></i></button>
             </div>
           </div>
 
-          <!-- STEP 2 -->
           <div id="step-2" class="hidden space-y-6">
             <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
               <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-black text-lg">2</div>
-              <div>
-                <h3 class="text-xl font-bold text-slate-800">Status & Kontak</h3>
-                <p class="text-xs text-slate-400">Informasi Tambahan</p>
-              </div>
+              <div><h3 class="text-xl font-bold text-slate-800">Status & Kontak</h3><p class="text-xs text-slate-400">Informasi Tambahan</p></div>
             </div>
             
             <div class="grid md:grid-cols-2 gap-6">
@@ -414,14 +374,10 @@
             </div>
           </div>
 
-          <!-- STEP 3 -->
           <div id="step-3" class="hidden space-y-6">
             <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
               <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-black text-lg">3</div>
-              <div>
-                <h3 class="text-xl font-bold text-slate-800">Data Penerus</h3>
-                <p class="text-xs text-slate-400">Daftar Anak (Opsional)</p>
-              </div>
+              <div><h3 class="text-xl font-bold text-slate-800">Data Penerus</h3><p class="text-xs text-slate-400">Daftar Anak (Opsional)</p></div>
             </div>
 
             <div class="bg-blue-50/50 border border-blue-100 rounded-xl p-4 mb-6 flex gap-3 items-start">
@@ -445,10 +401,8 @@
               </button>
             </div>
           </div>
-
         </form>
       </div>
-
     </div>
   </div>
 </main>
@@ -462,216 +416,48 @@
 </nav>
 
 <script>
+  // ==========================================
+  // --- GENERATOR MANIFEST PWA (BLOGGER) ---
+  // ==========================================
+  const pwaManifest = {
+    name: "Silsilah Keluarga Pro",
+    short_name: "Silsilah",
+    start_url: window.location.pathname,
+    display: "standalone",
+    background_color: "#f0fdf4",
+    theme_color: "#22c55e",
+    icons: [
+      { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Family_tree_icon.svg/512px-Family_tree_icon.svg.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Family_tree_icon.svg/192px-Family_tree_icon.svg.png", sizes: "192x192", type: "image/png", purpose: "any maskable" }
+    ]
+  };
+  const manifestUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(pwaManifest));
+  const linkManifest = document.createElement('link'); linkManifest.rel = 'manifest'; linkManifest.href = manifestUrl; document.head.appendChild(linkManifest);
+
+  // ==========================================
+  // --- KONFIGURASI UTAMA ---
+  // ==========================================
   const IS_PREVIEW = false; 
   const GAS_URL = "https://script.google.com/macros/s/AKfycbyBTFEVdvaX6hsgvF27sdGA5ZaUHisGpaoH0BK3vEum5DhLp4ty4CgD7-PrrMX1A6fV/exec";
 
   let sessionToken = null; let sessionRole = null; let sessionGenerasi = ''; let loginRole = 'admin';
   let currentStep = 1; let svg, g, zoom, root; let treeUpdate = null; let allExpanded = false; let anakCount = 0; let newPhotoData = ""; let oldPhotoUrl = ""; let searchIndex = [];
 
-  if (IS_PREVIEW && (!window.google || !window.google.script || !window.google.script.run)) {
-    if (!window.google) window.google = {};
-    if (!window.google.script) window.google.script = {};
-
-    let cachedTree = localStorage.getItem('silsilah_mock_tree');
-    const dummyTreeData = cachedTree ? JSON.parse(cachedTree) : {
-      id: "root-1", nama: "Kakek Buyut", generasi: "Generasi 1", gender: "L", status: "Almarhum", pasangan: "Nenek Buyut",
-      children: [
-        { id: "child-1", nama: "Budi Santoso", generasi: "Generasi 2", gender: "L", status: "Hidup", pasangan: "Siti Rahma", 
-          children: [
-            { id: "grandchild-1", nama: "Andi Santoso", generasi: "Generasi 3", gender: "L", status: "Hidup" },
-            { id: "grandchild-2", nama: "Rini Santoso", generasi: "Generasi 3", gender: "P", status: "Hidup" }
-          ]
-        },
-        { id: "child-2", nama: "Wati Sulastri", generasi: "Generasi 2", gender: "P", status: "Hidup", pasangan: "Joko Anwar",
-          children: [
-            { id: "grandchild-3", nama: "Doni Anwar", generasi: "Generasi 3", gender: "L", status: "Hidup" }
-          ]
-        }
-      ]
-    };
-
-    function saveMockTree() { localStorage.setItem('silsilah_mock_tree', JSON.stringify(dummyTreeData)); }
-
-    class MockRunner {
-      constructor(successCb = null, errorCb = null) {
-        this.successCb = successCb;
-        this.errorCb = errorCb;
-      }
-      withSuccessHandler(cb) { return new MockRunner(cb, this.errorCb); }
-      withFailureHandler(cb) { return new MockRunner(this.successCb, cb); }
-      
-      validateSession(token) { setTimeout(() => { if(this.successCb) { if (token === 'dummy-token-admin') this.successCb({role: 'admin', generasi: ''}); else if (token === 'dummy-token-user') this.successCb({role: 'user', generasi: 'Generasi 2'}); else this.successCb(null); } }, 500); }
-      checkPassword(pwd, role, gen) { setTimeout(() => { if(this.successCb) { if (pwd === 'edudigital') this.successCb({valid: true, token: 'dummy-token-'+role, role: role, generasi: gen}); else this.successCb({valid: false}); } }, 800); }
-      logout() { setTimeout(() => { if(this.successCb) this.successCb(true); }, 200); }
-      getDashboardStats() { setTimeout(() => { if(this.successCb) this.successCb({generation: 3, parents: 3, members: 6, children: 3}); }, 300); }
-      getGenerasiList() { setTimeout(() => { if(this.successCb) this.successCb(['Generasi 1', 'Generasi 2', 'Generasi 3', 'Generasi 4']); }, 200); }
-      
-      // PERBAIKAN 1: Menarik daftar orang tua dinamis dari memori berdasarkan Generasi sebelumnya
-      getParentsList(gen) { 
-        setTimeout(() => { 
-          if(this.successCb) {
-             const genNum = parseInt(gen.replace(/\D/g, '')) || 1;
-             const targetGen = "Generasi " + (genNum - 1);
-             const parents = [];
-             function searchGen(n) {
-                if(n.generasi === targetGen || n.generation === targetGen) parents.push({id: n.id, name: n.nama || n.name});
-                if(n.children) n.children.forEach(searchGen);
-                if(n._children) n._children.forEach(searchGen);
-             }
-             if(genNum > 1) searchGen(dummyTreeData);
-             this.successCb(parents);
-          } 
-        }, 300); 
-      }
-      
-      getSearchIndex() { setTimeout(() => { if(this.successCb) this.successCb([{id: 'child-1', nama: 'Budi Santoso', gen: 'Generasi 2'}, {id: 'grandchild-1', nama: 'Andi Santoso', gen: 'Generasi 3'}]); }, 300); }
-      getFamilyTreeData() { setTimeout(() => { if(this.successCb) this.successCb(dummyTreeData); }, 600); }
-      
-      // PERBAIKAN 2: Menyisipkan Data Baru secara nyata ke dalam struktur grafik Pohon Simulasi
-      processForm(data) { 
-        setTimeout(() => { 
-          if(this.successCb) {
-            if(data.id) {
-               // Update existing
-               function updateNode(n) {
-                 if (n.id === data.id) {
-                   n.nama = data.nama; n.generasi = data.generasi; n.gender = data.gender;
-                   n.status = data.status; n.pasangan = data.pasangan; n.alamat = data.alamat; n.noHp = data.noHp;
-                   if(data.newPhotoData) n.foto = data.newPhotoData;
-                 }
-                 if (n.children) n.children.forEach(updateNode);
-                 if (n._children) n._children.forEach(updateNode);
-               }
-               updateNode(dummyTreeData);
-               saveMockTree();
-               this.successCb({success: true, message: 'Data Dummy berhasil diperbarui!'});
-            } else {
-               // Tambah Node Baru
-               const newNode = {
-                 id: "id-" + Math.floor(Math.random() * 100000),
-                 nama: data.nama, generasi: data.generasi, gender: data.gender,
-                 status: data.status, pasangan: data.pasangan, alamat: data.alamat, noHp: data.noHp,
-                 foto: data.newPhotoData, children: []
-               };
-               
-               let ditambahkan = false;
-               function addChildNode(n) {
-                 if (n.id === data.parentId) {
-                   if (!n.children) n.children = [];
-                   n.children.push(newNode);
-                   ditambahkan = true;
-                   return true;
-                 }
-                 let found = false;
-                 if (n.children) found = n.children.some(addChildNode);
-                 if (!found && n._children) found = n._children.some(addChildNode);
-                 return found;
-               }
-
-               if (data.parentId === 'root' || data.parentId === 'root-1' || data.parentId === '') {
-                 if(!dummyTreeData.children) dummyTreeData.children = [];
-                 dummyTreeData.children.push(newNode);
-                 ditambahkan = true;
-               } else {
-                 addChildNode(dummyTreeData);
-               }
-
-               saveMockTree();
-               if(ditambahkan) {
-                 this.successCb({success: true, message: 'Data Dummy baru berhasil ditambahkan ke Pohon!'});
-               } else {
-                 if(!dummyTreeData.children) dummyTreeData.children = [];
-                 dummyTreeData.children.push(newNode);
-                 this.successCb({success: true, message: 'Ditambahkan ke Root karena Parent tidak ketemu!'});
-               }
-            }
-          } 
-        }, 800); 
-      }
-      
-      getMemberById(id) { 
-        setTimeout(() => { 
-          if(this.successCb) {
-             let found = null;
-             function searchNode(n) {
-               if (n.id === id) found = n;
-               if (n.children) n.children.forEach(searchNode);
-               if (n._children) n._children.forEach(searchNode);
-             }
-             searchNode(dummyTreeData);
-             if (found) {
-               this.successCb({
-                 id: found.id, nama: found.nama || found.name, gender: found.gender, generasi: found.generasi || found.generation, 
-                 parentId: 'root-1', status: found.status, pasangan: found.pasangan, 
-                 alamat: found.alamat || '', noHp: found.noHp || '', foto: found.foto || ''
-               });
-             } else {
-               this.successCb({id: id, nama: 'Anggota Dummy', gender: 'L', generasi: 'Generasi 2', parentId: 'root-1', status: 'Hidup'}); 
-             }
-          } 
-        }, 400); 
-      }
-      
-      // PERBAIKAN Tambahan: Menghapus Node dari memori saat di-delete
-      deleteMember(id) { 
-        setTimeout(() => { 
-          if(this.successCb) { 
-            function removeNode(parent) {
-               if (parent.children) {
-                 const initLen = parent.children.length;
-                 parent.children = parent.children.filter(c => c.id !== id);
-                 if (parent.children.length < initLen) return true;
-                 for (let c of parent.children) if(removeNode(c)) return true;
-               }
-               if (parent._children) {
-                 const initLen = parent._children.length;
-                 parent._children = parent._children.filter(c => c.id !== id);
-                 if (parent._children.length < initLen) return true;
-                 for (let c of parent._children) if(removeNode(c)) return true;
-               }
-               return false;
-            }
-            removeNode(dummyTreeData);
-            saveMockTree();
-            this.successCb({success: true, message: 'Anggota berhasil dihapus.'}); 
-          } 
-        }, 500); 
-      }
-      
-      changePassword(token, oldP, newP) { setTimeout(() => { if(this.successCb) this.successCb({success: true, message: 'Password berhasil diubah (Dummy)'}); }, 500); }
-    }
-
-    window.google.script.run = new MockRunner();
-  } else if (!IS_PREVIEW && (!window.google || !window.google.script || !window.google.script.run)) {
-    // JEMBATAN API UNTUK BLOGGER (API RUNNER)
+  if (!IS_PREVIEW && (!window.google || !window.google.script || !window.google.script.run)) {
     if (!window.google) window.google = {};
     if (!window.google.script) window.google.script = {};
     
     class ApiRunner {
-      constructor(successCb = null, errorCb = null) {
-        this.successCb = successCb;
-        this.errorCb = errorCb;
-      }
+      constructor(successCb = null, errorCb = null) { this.successCb = successCb; this.errorCb = errorCb; }
       withSuccessHandler(cb) { return new ApiRunner(cb, this.errorCb); }
       withFailureHandler(cb) { return new ApiRunner(this.successCb, cb); }
 
       _call(action, params) {
-        if (!GAS_URL) return console.error("GAS_URL kosong!");
-        
-        fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: action, params: params }),
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-        })
+        if (!GAS_URL || GAS_URL.includes("URL_GAS_ANDA")) return console.error("URL GAS Belum Diisi!");
+        fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: action, params: params }), headers: { 'Content-Type': 'text/plain;charset=utf-8' } })
         .then(res => res.json())
-        .then(data => {
-          if (data.error && this.errorCb) this.errorCb(new Error(data.error));
-          else if (this.successCb) this.successCb(data.result);
-        })
-        .catch(err => {
-          console.error("API Error:", err);
-          if (this.errorCb) this.errorCb(err);
-        });
+        .then(data => { if (data.error && this.errorCb) this.errorCb(new Error(data.error)); else if (this.successCb) this.successCb(data.result); })
+        .catch(err => { if (this.errorCb) this.errorCb(err); });
       }
 
       validateSession(token) { this._call('validateSession', [token]); }
@@ -687,7 +473,6 @@
       deleteMember(id, token) { this._call('deleteMember', [id, token]); }
       changePassword(token, oldP, newP) { this._call('changePassword', [token, oldP, newP]); }
     }
-    
     window.google.script.run = new ApiRunner();
   }
 
@@ -705,7 +490,6 @@
     document.querySelectorAll('.nav-item').forEach(btn => { btn.classList.remove('text-white', 'shadow-lg'); btn.style.background = ''; btn.classList.add('text-green-700'); });
     document.querySelectorAll('.mobile-nav-item').forEach(btn => btn.classList.remove('active'));
     document.getElementById(`view-${tab}`).classList.remove('hidden');
-    
     const navBtn = document.getElementById(`nav-${tab}`);
     if (navBtn) { navBtn.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)'; navBtn.classList.add('text-white', 'shadow-lg'); navBtn.classList.remove('text-green-700'); }
     const mobileBtn = document.getElementById(`mobile-nav-${tab}`);
@@ -774,8 +558,7 @@
   function doLogout() {
     Swal.fire({ title: 'Keluar?', icon: 'question', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal' }).then(result => {
       if (result.isConfirmed) {
-        google.script.run.logout(sessionToken); sessionStorage.clear();
-        sessionToken = null; sessionRole = null; sessionGenerasi = '';
+        sessionStorage.clear(); sessionToken = null; sessionRole = null; sessionGenerasi = '';
         document.getElementById('login-password').value = ''; document.getElementById('login-btn').disabled = false; document.getElementById('login-btn').innerHTML = 'Masuk';
         setLoginRole('admin'); showLoginOverlay();
       }
@@ -794,27 +577,18 @@
     for (let i = 1; i <= 10; i++) { const opt = document.createElement('option'); opt.value = `Generasi ${i}`; opt.textContent = `Generasi ${i}`; select.appendChild(opt); }
   }
 
-  // --- KUMPULAN FUNGSI FORM MANAJEMEN DATA ---
   function loadParentsList() {
-    const gen = document.getElementById('generasi').value;
-    const select = document.getElementById('orangTua');
+    const gen = document.getElementById('generasi').value; const select = document.getElementById('orangTua');
     if (!gen) { select.innerHTML = '<option value="">Pilih Generasi Dulu</option>'; return; }
     
     select.disabled = true; select.innerHTML = '<option value="">Memuat data...</option>';
     google.script.run
       .withSuccessHandler(parents => {
         select.innerHTML = '<option value="">Pilih Orang Tua</option><option value="root">-- Sebagai Kakek/Nenek Buyut (Root) --</option>';
-        // Pengecekan ekstra agar sistem tidak crash jika server mengembalikan data selain Array
-        if (parents && Array.isArray(parents)) {
-          parents.forEach(p => { const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.name || p.nama; select.appendChild(opt); });
-        }
+        if (parents && Array.isArray(parents)) { parents.forEach(p => { const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.name || p.nama; select.appendChild(opt); }); }
         select.disabled = false;
       })
-      .withFailureHandler(err => {
-        // Jika server error, kotak tetap dibuka paksa agar opsi Root bisa dipilih
-        select.innerHTML = '<option value="">Pilih Orang Tua</option><option value="root">-- Sebagai Kakek/Nenek Buyut (Root) --</option>';
-        select.disabled = false;
-      })
+      .withFailureHandler(err => { select.innerHTML = '<option value="">Pilih Orang Tua</option><option value="root">-- Sebagai Kakek/Nenek Buyut (Root) --</option>'; select.disabled = false; })
       .getParentsList(gen);
   }
 
@@ -827,20 +601,12 @@
       .withSuccessHandler(parents => {
         select.innerHTML = '<option value="">Pilih Orang Tua</option><option value="root">-- Sebagai Kakek/Nenek Buyut (Root) --</option>';
         if (parents && Array.isArray(parents)) {
-          parents.forEach(p => {
-            const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.name || p.nama;
-            if (p.id === selectedParentId) opt.selected = true;
-            select.appendChild(opt);
-          });
+          parents.forEach(p => { const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.name || p.nama; if (p.id === selectedParentId) opt.selected = true; select.appendChild(opt); });
         }
         if(selectedParentId === 'root' || selectedParentId === '') select.value = 'root';
         select.disabled = false;
       })
-      .withFailureHandler(err => {
-        select.innerHTML = '<option value="">Pilih Orang Tua</option><option value="root">-- Sebagai Kakek/Nenek Buyut (Root) --</option>';
-        if(selectedParentId === 'root' || selectedParentId === '') select.value = 'root';
-        select.disabled = false;
-      })
+      .withFailureHandler(err => { select.innerHTML = '<option value="">Pilih Orang Tua</option><option value="root">-- Sebagai Kakek/Nenek Buyut (Root) --</option>'; if(selectedParentId === 'root' || selectedParentId === '') select.value = 'root'; select.disabled = false; })
       .getParentsList(gen);
   }
 
@@ -850,56 +616,34 @@
       if (file.size > 2 * 1024 * 1024) { Swal.fire('File Terlalu Besar', 'Maksimal ukuran foto adalah 2MB', 'warning'); input.value = ''; return; }
       const reader = new FileReader();
       reader.onload = function(e) {
-        newPhotoData = e.target.result; 
-        const img = document.getElementById('preview-foto');
-        img.src = newPhotoData; img.classList.remove('hidden');
-        document.getElementById('placeholder-foto').classList.add('hidden');
+        newPhotoData = e.target.result; const img = document.getElementById('preview-foto'); img.src = newPhotoData; img.classList.remove('hidden'); document.getElementById('placeholder-foto').classList.add('hidden');
       };
       reader.readAsDataURL(file);
     }
   }
 
-  function nextStep(step) {
-    document.getElementById(`step-${currentStep}`).classList.add('hidden');
-    document.getElementById(`step-${step}`).classList.remove('hidden');
-    currentStep = step;
-    document.getElementById('view-form').scrollTop = 0;
-  }
-  
+  function nextStep(step) { document.getElementById(`step-${currentStep}`).classList.add('hidden'); document.getElementById(`step-${step}`).classList.remove('hidden'); currentStep = step; document.getElementById('view-form').scrollTop = 0; }
   function prevStep(step) { nextStep(step); }
 
   function addAnakField() {
-    anakCount++;
-    const container = document.getElementById('anak-container');
-    const div = document.createElement('div');
-    div.className = 'flex items-center gap-3 animate-slide-up mb-2';
-    div.innerHTML = `
-      <input type="text" class="w-full p-3 border rounded-xl" placeholder="Nama Anak ${anakCount}" id="anak-${anakCount}" />
-      <button type="button" onclick="this.parentElement.remove()" class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 hover:bg-rose-200 transition-all font-bold flex-shrink-0"><i class="fas fa-times"></i></button>
-    `;
+    anakCount++; const container = document.getElementById('anak-container'); const div = document.createElement('div'); div.className = 'flex items-center gap-3 animate-slide-up mb-2';
+    div.innerHTML = `<input type="text" class="w-full p-3 border rounded-xl outline-none focus:border-brand-500" placeholder="Nama Anak ${anakCount}" id="anak-${anakCount}" /><button type="button" onclick="this.parentElement.remove()" class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 hover:bg-rose-200 transition-all font-bold flex-shrink-0"><i class="fas fa-times"></i></button>`;
     container.appendChild(div);
   }
 
   function toggleTglMeninggal() {
-    const status = document.getElementById('status').value;
-    const wrap = document.getElementById('tgl-meninggal-wrap');
-    if (status === 'Almarhum') { wrap.classList.remove('hidden'); } 
-    else { wrap.classList.add('hidden'); document.getElementById('tglMeninggal').value = ''; }
+    const status = document.getElementById('status').value; const wrap = document.getElementById('tgl-meninggal-wrap');
+    if (status === 'Almarhum') { wrap.classList.remove('hidden'); } else { wrap.classList.add('hidden'); document.getElementById('tglMeninggal').value = ''; }
   }
 
   function resetFormState() {
-     document.getElementById('familyForm').reset();
-     document.getElementById('edit-id').value = ""; 
-     document.querySelector('#view-form h2').innerHTML = 'Form <span class="gradient-text">Data Keluarga</span>';
+     document.getElementById('familyForm').reset(); document.getElementById('edit-id').value = ""; document.querySelector('#view-form h2').innerHTML = 'Form <span class="gradient-text">Data Keluarga</span>';
      document.getElementById('anak-container').innerHTML = ''; anakCount = 0;
      document.getElementById('alamat').value = ''; document.getElementById('noHp').value = '';
      document.getElementById('tglMeninggal').value = ''; document.getElementById('tgl-meninggal-wrap').classList.add('hidden');
-     newPhotoData = ""; oldPhotoUrl = "";
-     document.getElementById('preview-foto').src = ""; document.getElementById('preview-foto').classList.add('hidden');
-     document.getElementById('placeholder-foto').classList.remove('hidden');
-     document.getElementById('input-foto').value = "";
-     currentStep = 1;
-     document.getElementById('step-1').classList.remove('hidden'); document.getElementById('step-2').classList.add('hidden'); document.getElementById('step-3').classList.add('hidden');
+     newPhotoData = ""; oldPhotoUrl = ""; document.getElementById('preview-foto').src = ""; document.getElementById('preview-foto').classList.add('hidden');
+     document.getElementById('placeholder-foto').classList.remove('hidden'); document.getElementById('input-foto').value = "";
+     currentStep = 1; document.getElementById('step-1').classList.remove('hidden'); document.getElementById('step-2').classList.add('hidden'); document.getElementById('step-3').classList.add('hidden');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -907,36 +651,19 @@
     if (familyForm) {
       familyForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const anakList = [];
-        document.querySelectorAll('input[id^="anak-"]').forEach(input => { if (input.value && input.value.trim()) anakList.push({ nama: input.value.trim() }); });
-
+        const anakList = []; document.querySelectorAll('input[id^="anak-"]').forEach(input => { if (input.value && input.value.trim()) anakList.push({ nama: input.value.trim() }); });
         const formData = {
-          id: document.getElementById('edit-id').value || null,
-          nama: document.getElementById('nama').value,
-          gender: document.getElementById('gender').value,
-          generasi: document.getElementById('generasi').value,
-          parentId: document.getElementById('orangTua').value,
-          status: document.getElementById('status').value,
-          pasangan: document.getElementById('pasangan').value || '-',
-          alamat: document.getElementById('alamat').value || '',
-          noHp: document.getElementById('noHp').value || '',
-          tglMeninggal: document.getElementById('tglMeninggal').value || '',
-          anak: anakList,
-          newPhotoData: newPhotoData,
-          oldPhotoUrl: oldPhotoUrl
+          id: document.getElementById('edit-id').value || null, nama: document.getElementById('nama').value, gender: document.getElementById('gender').value, generasi: document.getElementById('generasi').value,
+          parentId: document.getElementById('orangTua').value, status: document.getElementById('status').value, pasangan: document.getElementById('pasangan').value || '-', alamat: document.getElementById('alamat').value || '',
+          noHp: document.getElementById('noHp').value || '', tglMeninggal: document.getElementById('tglMeninggal').value || '', anak: anakList, newPhotoData: newPhotoData, oldPhotoUrl: oldPhotoUrl
         };
-        
         if (!formData.parentId) return Swal.fire('Perhatian', 'Silahkan pilih Orang Tua terlebih dahulu', 'warning');
-
         Swal.fire({ title: 'Menyimpan Data...', html: 'Mengamankan data ke database...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
 
         google.script.run
           .withSuccessHandler(result => {
-            if (result.success) {
-              Swal.fire({ icon: 'success', title: 'Berhasil!', text: result.message, confirmButtonColor: '#0ea5e9' }).then(() => {
-                resetFormState(); loadDashboardStats(); initializeTree(); switchTab('dashboard');
-              });
-            } else { Swal.fire({ icon: 'error', title: 'Gagal!', text: result.message }); }
+            if (result.success) { Swal.fire({ icon: 'success', title: 'Berhasil!', text: result.message, confirmButtonColor: '#0ea5e9' }).then(() => { resetFormState(); loadDashboardStats(); initializeTree(); switchTab('dashboard'); }); } 
+            else { Swal.fire({ icon: 'error', title: 'Gagal!', text: result.message }); }
           })
           .withFailureHandler(err => Swal.fire({ icon: 'error', title: 'Gagal!', text: 'Terjadi kesalahan sistem.', confirmButtonColor: '#ef4444' }))
           .processForm(formData, sessionToken);
@@ -944,9 +671,6 @@
     }
   });
 
-  // ============================================
-  // TREE & FORM LOGIC
-  // ============================================
   function initializeTree() {
     google.script.run.withSuccessHandler(data => {
       if (!data) return document.getElementById('tree-container').innerHTML = '<div class="flex h-full items-center justify-center text-slate-400 font-bold">Belum ada data silsilah. Tambahkan di form!</div>';
@@ -955,432 +679,106 @@
   }
 
   const GEN_COLORS = [
-    { bg: '#fef3c7', accent: '#d97706', text: '#78350f', border: '#fcd34d', emoji: '👴' },
-    { bg: '#fce7f3', accent: '#db2777', text: '#831843', border: '#f9a8d4', emoji: '👨‍👩‍👧' },
-    { bg: '#d1fae5', accent: '#059669', text: '#065f46', border: '#6ee7b7', emoji: '👨‍👩‍👧‍👦' },
-    { bg: '#dbeafe', accent: '#2563eb', text: '#1e40af', border: '#93c5fd', emoji: '👦' },
-    { bg: '#ffedd5', accent: '#ea580c', text: '#9a3412', border: '#fdba74', emoji: '🧒' },
-    { bg: '#ede9fe', accent: '#7c3aed', text: '#5b21b6', border: '#c4b5fd', emoji: '👶' },
-    { bg: '#fdf4ff', accent: '#a21caf', text: '#701a75', border: '#e879f9', emoji: '🌟' },
-    { bg: '#ecfdf5', accent: '#16a34a', text: '#14532d', border: '#86efac', emoji: '🌱' },
-    { bg: '#fff7ed', accent: '#c2410c', text: '#7c2d12', border: '#fdba74', emoji: '🌿' },
-    { bg: '#f0f9ff', accent: '#0284c7', text: '#075985', border: '#7dd3fc', emoji: '🍃' }
+    { bg: '#fef3c7', accent: '#d97706', text: '#78350f', border: '#fcd34d', emoji: '👴' }, { bg: '#fce7f3', accent: '#db2777', text: '#831843', border: '#f9a8d4', emoji: '👨‍👩‍👧' },
+    { bg: '#d1fae5', accent: '#059669', text: '#065f46', border: '#6ee7b7', emoji: '👨‍👩‍👧‍👦' }, { bg: '#dbeafe', accent: '#2563eb', text: '#1e40af', border: '#93c5fd', emoji: '👦' },
+    { bg: '#ffedd5', accent: '#ea580c', text: '#9a3412', border: '#fdba74', emoji: '🧒' }, { bg: '#ede9fe', accent: '#7c3aed', text: '#5b21b6', border: '#c4b5fd', emoji: '👶' },
+    { bg: '#fdf4ff', accent: '#a21caf', text: '#701a75', border: '#e879f9', emoji: '🌟' }, { bg: '#ecfdf5', accent: '#16a34a', text: '#14532d', border: '#86efac', emoji: '🌱' },
+    { bg: '#fff7ed', accent: '#c2410c', text: '#7c2d12', border: '#fdba74', emoji: '🌿' }, { bg: '#f0f9ff', accent: '#0284c7', text: '#075985', border: '#7dd3fc', emoji: '🍃' }
   ];
 
-  function getGenColor(genStr) {
-    const num = parseInt((genStr || '').replace(/\D/g, '')) || 1;
-    return GEN_COLORS[(num - 1) % GEN_COLORS.length];
-  }
+  function getGenColor(genStr) { const num = parseInt((genStr || '').replace(/\D/g, '')) || 1; return GEN_COLORS[(num - 1) % GEN_COLORS.length]; }
 
   function renderTree(treeData) {
-    document.getElementById('tree-container').innerHTML = '';
-    
-    // Reset state expand all
-    allExpanded = false;
-    const btnExp = document.getElementById('btn-expand-all');
-    const lblExp = document.getElementById('label-expand-all');
-    if (btnExp) {
-      btnExp.style.background = 'rgba(255,255,255,0.15)';
-      btnExp.title = 'Buka semua generasi';
-      btnExp.querySelector('i').className = 'fas fa-sitemap text-sm';
-    }
+    document.getElementById('tree-container').innerHTML = ''; allExpanded = false;
+    const btnExp = document.getElementById('btn-expand-all'); const lblExp = document.getElementById('label-expand-all');
+    if (btnExp) { btnExp.style.background = 'rgba(255,255,255,0.15)'; btnExp.title = 'Buka semua generasi'; btnExp.querySelector('i').className = 'fas fa-sitemap text-sm'; }
     if (lblExp) lblExp.innerHTML = 'Buka<br>Semua';
+    const width = window.innerWidth; const height = window.innerHeight - 80;
+    svg = d3.select('#tree-container').append('svg').attr('width', width).attr('height', height).style('cursor', 'grab');
+    const defs = svg.append('defs'); const filter = defs.append('filter').attr('id', 'card-shadow').attr('x', '-20%').attr('y', '-20%').attr('width', '140%').attr('height', '160%');
+    filter.append('feDropShadow').attr('dx', 0).attr('dy', 4).attr('stdDeviation', 6).attr('flood-color', 'rgba(0,0,0,0.10)');
+    g = svg.append('g'); zoom = d3.zoom().scaleExtent([0.08, 3]).on('zoom', e => g.attr('transform', e.transform)); svg.call(zoom).on('dblclick.zoom', null);
 
-    const width  = window.innerWidth;
-    const height = window.innerHeight - 80;
-
-    svg = d3.select('#tree-container')
-      .append('svg')
-      .attr('width', width)
-      .attr('height', height)
-      .style('cursor', 'grab');
-
-    // ---- DEFS & FILTERS ----
-    const defs = svg.append('defs');
-    
-    // Filter Bayangan Kartu
-    const filter = defs.append('filter')
-      .attr('id', 'card-shadow')
-      .attr('x', '-20%').attr('y', '-20%')
-      .attr('width', '140%').attr('height', '160%');
-    filter.append('feDropShadow')
-      .attr('dx', 0).attr('dy', 4).attr('stdDeviation', 6)
-      .attr('flood-color', 'rgba(0,0,0,0.10)');
-
-    g = svg.append('g');
-
-    // Setup Zoom
-    zoom = d3.zoom()
-      .scaleExtent([0.08, 3])
-      .on('zoom', e => g.attr('transform', e.transform));
-    svg.call(zoom).on('dblclick.zoom', null);
-
-    const NODE_W  = 260;
-    const NODE_H  = 100;
-    const NODE_RX = 20;
-    const DEPTH_SPACING = 310;
-
-    const treemap = d3.tree()
-      .nodeSize([NODE_H + 28, DEPTH_SPACING])
-      .separation((a, b) => a.parent === b.parent ? 1.1 : 1.4);
-
-    root = d3.hierarchy(treeData, d => d.children);
-    root.x0 = 0;
-    root.y0 = 0;
-
-    // Expand hanya root dan keturunan level pertama by default
-    function collapse(d) {
-      if (d.children) {
-        d._children = d.children;
-        d._children.forEach(collapse);
-        d.children = null;
-      }
-    }
-    if (root.children) {
-      root.children.forEach(child => {
-        if (child.children) child.children.forEach(collapse);
-      });
-    }
-
-    buildGenLegend(root);
-    update(root);
-    resetZoom();
-
-    treeUpdate = update; // Expose global update
-
-    // Fungsi Toggle Buka/Tutup Semua
-    function expandAll(d) {
-      if (d._children) { d.children = d._children; d._children = null; }
-      if (d.children) d.children.forEach(expandAll);
-    }
-    function collapseAll(d) {
-      if (d.children) { d._children = d.children; d._children.forEach(collapseAll); d.children = null; }
-    }
+    const NODE_W = 260; const NODE_H = 100; const NODE_RX = 20; const DEPTH_SPACING = 310;
+    const treemap = d3.tree().nodeSize([NODE_H + 28, DEPTH_SPACING]).separation((a, b) => a.parent === b.parent ? 1.1 : 1.4);
+    root = d3.hierarchy(treeData, d => d.children); root.x0 = 0; root.y0 = 0;
+    function collapse(d) { if (d.children) { d._children = d.children; d._children.forEach(collapse); d.children = null; } }
+    if (root.children) { root.children.forEach(child => { if (child.children) child.children.forEach(collapse); }); }
+    buildGenLegend(root); update(root); resetZoom(); treeUpdate = update; 
 
     window.toggleExpandAll = function() {
-      if (!root || !treeUpdate) return;
-      allExpanded = !allExpanded;
-
-      if (allExpanded) {
-        expandAll(root);
-      } else {
-        if (root.children) root.children.forEach(collapseAll);
-      }
-
+      if (!root || !treeUpdate) return; allExpanded = !allExpanded;
+      if (allExpanded) { function expandAll(d) { if (d._children) { d.children = d._children; d._children = null; } if (d.children) d.children.forEach(expandAll); } expandAll(root); } 
+      else { function collapseAll(d) { if (d.children) { d._children = d.children; d._children.forEach(collapseAll); d.children = null; } } if (root.children) root.children.forEach(collapseAll); }
       treeUpdate(root);
-
-      const btn = document.getElementById('btn-expand-all');
-      const label = document.getElementById('label-expand-all');
-      if (allExpanded) {
-        btn.style.background = 'rgba(34,197,94,0.45)';
-        btn.title = 'Tutup semua generasi';
-        btn.querySelector('i').className = 'fas fa-compress-alt text-sm';
-        label.innerHTML = 'Tutup<br>Semua';
-      } else {
-        btn.style.background = 'rgba(255,255,255,0.15)';
-        btn.title = 'Buka semua generasi';
-        btn.querySelector('i').className = 'fas fa-sitemap text-sm';
-        label.innerHTML = 'Buka<br>Semua';
-      }
-
+      if (allExpanded) { btnExp.style.background = 'rgba(34,197,94,0.45)'; btnExp.querySelector('i').className = 'fas fa-compress-alt text-sm'; lblExp.innerHTML = 'Tutup<br>Semua'; } 
+      else { btnExp.style.background = 'rgba(255,255,255,0.15)'; btnExp.querySelector('i').className = 'fas fa-sitemap text-sm'; lblExp.innerHTML = 'Buka<br>Semua'; }
       setTimeout(() => resetZoom(), 550);
     };
 
-    // Fungsi Build Legend Generasi
     function buildGenLegend(r) {
-      const genSet = new Set();
-      r.each(d => { 
-        const genStr = d.data.generasi || d.data.generation;
-        if (genStr) genSet.add(genStr); 
-      });
+      const genSet = new Set(); r.each(d => { const genStr = d.data.generasi || d.data.generation; if (genStr) genSet.add(genStr); });
       const gens = Array.from(genSet).sort((a,b) => parseInt(a.replace(/\D/g,'')) - parseInt(b.replace(/\D/g,'')));
-      
-      const container = document.getElementById('gen-legend-items');
-      container.innerHTML = '';
-      
+      const container = document.getElementById('gen-legend-items'); container.innerHTML = '';
       gens.forEach(gen => {
-        const c = getGenColor(gen);
-        const el = document.createElement('div');
-        el.className = 'flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm';
-        el.style.background = c.bg;
-        el.style.color = c.text;
-        el.style.border = `1.5px solid ${c.border}`;
-        el.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${c.accent};display:inline-block;flex-shrink:0;"></span>${gen}`;
+        const c = getGenColor(gen); const el = document.createElement('div'); el.className = 'flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm';
+        el.style.background = c.bg; el.style.color = c.text; el.style.border = `1.5px solid ${c.border}`; el.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${c.accent};display:inline-block;flex-shrink:0;"></span>${gen}`;
         container.appendChild(el);
       });
-      
-      const legend = document.getElementById('gen-legend');
-      if (gens.length > 0) {
-        legend.classList.remove('hidden');
-        document.getElementById('gen-legend-panel').classList.add('hidden'); // Tutup by default
-        document.getElementById('gen-legend-chevron').style.transform = 'rotate(0deg)';
-      }
+      if (gens.length > 0) { document.getElementById('gen-legend').classList.remove('hidden'); document.getElementById('gen-legend-panel').classList.add('hidden'); document.getElementById('gen-legend-chevron').style.transform = 'rotate(0deg)'; }
     }
 
     function update(source) {
-      const td = treemap(root);
-      const nodes = td.descendants();
-      const links = td.links();
+      const td = treemap(root); const nodes = td.descendants(); const links = td.links(); nodes.forEach(d => { d.y = d.depth * DEPTH_SPACING; });
+      let i = 0; const node = g.selectAll('g.node').data(nodes, d => d.id || (d.id = ++i));
+      const nodeEnter = node.enter().append('g').attr('class', 'node').attr('transform', d => `translate(${source.y0 || 0},${source.x0 || 0})`).style('opacity', 0).on('click', click);
 
-      nodes.forEach(d => { d.y = d.depth * DEPTH_SPACING; });
+      const HALF_W = NODE_W / 2; const HALF_H = NODE_H / 2;
+      nodeEnter.each(function(d) { d.genSafeStr = d.data.generasi || d.data.generation || 'Generasi 1'; d.nameSafeStr = d.data.nama || d.data.name || ''; });
 
-      let i = 0;
-      const node = g.selectAll('g.node').data(nodes, d => d.id || (d.id = ++i));
+      nodeEnter.append('rect').attr('class', 'card-bg').attr('width', NODE_W).attr('height', NODE_H).attr('x', -HALF_W).attr('y', -HALF_H).attr('rx', NODE_RX).attr('fill', '#fff').attr('filter', 'url(#card-shadow)');
+      nodeEnter.append('rect').attr('width', 8).attr('height', NODE_H - 24).attr('x', -HALF_W + 0).attr('y', -HALF_H + 12).attr('rx', 4).attr('fill', d => getGenColor(d.genSafeStr).accent);
+      nodeEnter.append('rect').attr('class', 'card-face').attr('width', NODE_W).attr('height', NODE_H).attr('x', -HALF_W).attr('y', -HALF_H).attr('rx', NODE_RX).attr('fill', '#fff').attr('stroke', d => getGenColor(d.genSafeStr).border).attr('stroke-width', 2).attr('fill-opacity', 0.96).style('transition', 'stroke 0.3s');
+      nodeEnter.append('rect').attr('width', NODE_W - 4).attr('height', 26).attr('x', -HALF_W + 2).attr('y', -HALF_H + 2).attr('rx', NODE_RX - 2).attr('fill', d => getGenColor(d.genSafeStr).bg).attr('ry', 0);
+      nodeEnter.append('rect').attr('width', NODE_W - 4).attr('height', 14).attr('x', -HALF_W + 2).attr('y', -HALF_H + 14).attr('fill', d => getGenColor(d.genSafeStr).bg);
+      nodeEnter.append('text').attr('x', -HALF_W + 18).attr('y', -HALF_H + 17).attr('text-anchor', 'start').style('font-size', '10px').style('font-weight', '800').style('letter-spacing', '0.06em').attr('fill', d => getGenColor(d.genSafeStr).text).text(d => d.genSafeStr);
+      nodeEnter.append('circle').attr('cx', HALF_W - 14).attr('cy', -HALF_H + 14).attr('r', 6).attr('fill', d => d.data.status === 'Hidup' ? '#10b981' : '#94a3b8').attr('stroke', '#fff').attr('stroke-width', 2);
+      nodeEnter.append('text').attr('x', HALF_W - 22).attr('y', -HALF_H + 19).attr('text-anchor', 'end').style('font-size', '9px').style('font-weight', '600').attr('fill', d => d.data.status === 'Hidup' ? '#10b981' : '#94a3b8').text(d => d.data.status);
 
-      const nodeEnter = node.enter().append('g')
-        .attr('class', 'node')
-        .attr('transform', d => `translate(${source.y0 || 0},${source.x0 || 0})`)
-        .style('opacity', 0)
-        .on('click', click);
+      const AVATAR_CX = -HALF_W + 52; const AVATAR_CY = 14; const AVATAR_R  = 27;
+      nodeEnter.append('circle').attr('cx', AVATAR_CX).attr('cy', AVATAR_CY).attr('r', AVATAR_R + 3).attr('fill', d => getGenColor(d.genSafeStr).bg).attr('stroke', d => getGenColor(d.genSafeStr).border).attr('stroke-width', 2);
+      nodeEnter.append('defs').append('clipPath').attr('id', d => `clip-${d.id}`).append('circle').attr('cx', AVATAR_CX).attr('cy', AVATAR_CY).attr('r', AVATAR_R);
+      nodeEnter.filter(d => d.data.foto).append('image').attr('href', d => getDisplayUrl(d.data.foto)).attr('x', AVATAR_CX - AVATAR_R).attr('y', AVATAR_CY - AVATAR_R).attr('width', AVATAR_R * 2).attr('height', AVATAR_R * 2).attr('preserveAspectRatio', 'xMidYMid slice').attr('clip-path', d => `url(#clip-${d.id})`);
+      nodeEnter.filter(d => !d.data.foto).append('text').attr('x', AVATAR_CX).attr('y', AVATAR_CY + 9).attr('text-anchor', 'middle').style('font-size', '28px').text(d => { const genNum = parseInt(d.genSafeStr.replace(/\D/g,'')) || 1; if (genNum === 1) return d.data.gender === 'P' ? '👵' : '👴'; if (genNum <= 3) return d.data.gender === 'P' ? '👩' : '👨'; if (genNum <= 5) return d.data.gender === 'P' ? '👧' : '👦'; return '👶'; });
+      nodeEnter.append('rect').attr('width', 24).attr('height', 14).attr('x', AVATAR_CX - 12).attr('y', AVATAR_CY + AVATAR_R - 2).attr('rx', 7).attr('fill', d => d.data.gender === 'P' ? '#fce7f3' : '#dbeafe').attr('stroke', d => d.data.gender === 'P' ? '#f9a8d4' : '#93c5fd').attr('stroke-width', 1.5);
+      nodeEnter.append('text').attr('x', AVATAR_CX).attr('y', AVATAR_CY + AVATAR_R + 8).attr('text-anchor', 'middle').style('font-size', '9px').style('font-weight', '800').attr('fill', d => d.data.gender === 'P' ? '#db2777' : '#2563eb').text(d => d.data.gender === 'P' ? '♀' : '♂');
 
-      // ---- PEMBUATAN KARTU ----
-      const HALF_W = NODE_W / 2;
-      const HALF_H = NODE_H / 2;
-
-      nodeEnter.each(function(d) {
-        d.genSafeStr = d.data.generasi || d.data.generation || 'Generasi 1';
-        d.nameSafeStr = d.data.nama || d.data.name || '';
-      });
-
-      // 1. Latar Belakang Kartu (Bayangan Putih)
-      nodeEnter.append('rect')
-        .attr('class', 'card-bg')
-        .attr('width', NODE_W).attr('height', NODE_H)
-        .attr('x', -HALF_W).attr('y', -HALF_H)
-        .attr('rx', NODE_RX)
-        .attr('fill', '#fff')
-        .attr('filter', 'url(#card-shadow)');
-
-      // 2. Bar Aksen Warna Kiri
-      nodeEnter.append('rect')
-        .attr('width', 8).attr('height', NODE_H - 24)
-        .attr('x', -HALF_W + 0).attr('y', -HALF_H + 12)
-        .attr('rx', 4)
-        .attr('fill', d => getGenColor(d.genSafeStr).accent);
-
-      // 3. Wajah Kartu Utama
-      nodeEnter.append('rect')
-        .attr('class', 'card-face')
-        .attr('width', NODE_W).attr('height', NODE_H)
-        .attr('x', -HALF_W).attr('y', -HALF_H)
-        .attr('rx', NODE_RX)
-        .attr('fill', '#fff')
-        .attr('stroke', d => getGenColor(d.genSafeStr).border)
-        .attr('stroke-width', 2)
-        .attr('fill-opacity', 0.96)
-        .style('transition', 'stroke 0.3s');
-
-      // 4. Header Label Generasi Atas
-      nodeEnter.append('rect')
-        .attr('width', NODE_W - 4).attr('height', 26)
-        .attr('x', -HALF_W + 2).attr('y', -HALF_H + 2)
-        .attr('rx', NODE_RX - 2)
-        .attr('fill', d => getGenColor(d.genSafeStr).bg)
-        .attr('ry', 0);
-
-      nodeEnter.append('rect')
-        .attr('width', NODE_W - 4).attr('height', 14)
-        .attr('x', -HALF_W + 2).attr('y', -HALF_H + 14)
-        .attr('fill', d => getGenColor(d.genSafeStr).bg);
-
-      // Teks Generasi
-      nodeEnter.append('text')
-        .attr('x', -HALF_W + 18).attr('y', -HALF_H + 17)
-        .attr('text-anchor', 'start')
-        .style('font-size', '10px').style('font-weight', '800')
-        .style('letter-spacing', '0.06em')
-        .attr('fill', d => getGenColor(d.genSafeStr).text)
-        .text(d => d.genSafeStr);
-
-      // 5. Titik Status (Hidup/Almarhum) Kanan Atas
-      nodeEnter.append('circle')
-        .attr('cx', HALF_W - 14).attr('cy', -HALF_H + 14).attr('r', 6)
-        .attr('fill', d => d.data.status === 'Hidup' ? '#10b981' : '#94a3b8')
-        .attr('stroke', '#fff').attr('stroke-width', 2);
-
-      nodeEnter.append('text')
-        .attr('x', HALF_W - 22).attr('y', -HALF_H + 19)
-        .attr('text-anchor', 'end')
-        .style('font-size', '9px').style('font-weight', '600')
-        .attr('fill', d => d.data.status === 'Hidup' ? '#10b981' : '#94a3b8')
-        .text(d => d.data.status);
-
-      // ---- PEMBUATAN AVATAR ----
-      const AVATAR_CX = -HALF_W + 52;
-      const AVATAR_CY = 14;
-      const AVATAR_R  = 27;
-
-      // Cincin Latar Belakang Avatar
-      nodeEnter.append('circle')
-        .attr('cx', AVATAR_CX).attr('cy', AVATAR_CY).attr('r', AVATAR_R + 3)
-        .attr('fill', d => getGenColor(d.genSafeStr).bg)
-        .attr('stroke', d => getGenColor(d.genSafeStr).border)
-        .attr('stroke-width', 2);
-
-      nodeEnter.append('defs')
-        .append('clipPath').attr('id', d => `clip-${d.id}`)
-        .append('circle').attr('cx', AVATAR_CX).attr('cy', AVATAR_CY).attr('r', AVATAR_R);
-
-      // Jika ada Foto
-      nodeEnter.filter(d => d.data.foto)
-        .append('image')
-        .attr('href', d => getDisplayUrl(d.data.foto))
-        .attr('x', AVATAR_CX - AVATAR_R).attr('y', AVATAR_CY - AVATAR_R)
-        .attr('width', AVATAR_R * 2).attr('height', AVATAR_R * 2)
-        .attr('preserveAspectRatio', 'xMidYMid slice')
-        .attr('clip-path', d => `url(#clip-${d.id})`);
-
-      // Jika tanpa Foto, gunakan Emoji berdasarkan Generasi
-      nodeEnter.filter(d => !d.data.foto)
-        .append('text')
-        .attr('x', AVATAR_CX).attr('y', AVATAR_CY + 9)
-        .attr('text-anchor', 'middle')
-        .style('font-size', '28px')
-        .text(d => {
-          const genNum = parseInt(d.genSafeStr.replace(/\D/g,'')) || 1;
-          if (genNum === 1) return d.data.gender === 'P' ? '👵' : '👴';
-          if (genNum === 2 || genNum === 3) return d.data.gender === 'P' ? '👩' : '👨';
-          if (genNum <= 5)  return d.data.gender === 'P' ? '👧' : '👦';
-          return '👶';
-        });
-
-      // Pil Kelamin (L/P) di Bawah Avatar
-      nodeEnter.append('rect')
-        .attr('width', 24).attr('height', 14)
-        .attr('x', AVATAR_CX - 12).attr('y', AVATAR_CY + AVATAR_R - 2)
-        .attr('rx', 7)
-        .attr('fill', d => d.data.gender === 'P' ? '#fce7f3' : '#dbeafe')
-        .attr('stroke', d => d.data.gender === 'P' ? '#f9a8d4' : '#93c5fd')
-        .attr('stroke-width', 1.5);
-
-      nodeEnter.append('text')
-        .attr('x', AVATAR_CX).attr('y', AVATAR_CY + AVATAR_R + 8)
-        .attr('text-anchor', 'middle')
-        .style('font-size', '9px').style('font-weight', '800')
-        .attr('fill', d => d.data.gender === 'P' ? '#db2777' : '#2563eb')
-        .text(d => d.data.gender === 'P' ? '♀' : '♂');
-
-      // ---- PEMBUATAN TEKS INFO ----
       const TEXT_X = AVATAR_CX + AVATAR_R + 14;
+      nodeEnter.append('text').attr('x', TEXT_X).attr('y', AVATAR_CY - 10).attr('text-anchor', 'start').style('font-size', '14px').style('font-weight', '800').attr('fill', '#0f172a').text(d => d.nameSafeStr.length > 17 ? d.nameSafeStr.substring(0,17) + '…' : d.nameSafeStr);
+      nodeEnter.append('text').attr('x', TEXT_X).attr('y', AVATAR_CY + 8).attr('text-anchor', 'start').style('font-size', '11px').style('font-weight', '500').attr('fill', '#64748b').text(d => { const p = d.data.pasangan; if (!p || p === '-') return ''; return '❤ ' + (p.length > 14 ? p.substring(0,14) + '…' : p); });
+      nodeEnter.append('text').attr('x', TEXT_X).attr('y', AVATAR_CY + 24).attr('text-anchor', 'start').style('font-size', '10px').style('font-weight', '500').attr('fill', '#94a3b8').text(d => d.data.noHp ? '📞 ' + d.data.noHp : '');
 
-      // Nama Lengkap
-      nodeEnter.append('text')
-        .attr('x', TEXT_X).attr('y', AVATAR_CY - 10)
-        .attr('text-anchor', 'start')
-        .style('font-size', '14px').style('font-weight', '800')
-        .attr('fill', '#0f172a')
-        .text(d => d.nameSafeStr.length > 17 ? d.nameSafeStr.substring(0,17) + '…' : d.nameSafeStr);
+      const expandG = nodeEnter.filter(d => d.children || d._children).append('g').attr('class', 'expand-btn').attr('transform', `translate(${HALF_W + 2}, 0)`).style('cursor', 'pointer').on('click', function(event, d) { event.stopPropagation(); if (d.children) { d._children = d.children; d.children = null; } else { d.children = d._children; d._children = null; } update(d); });
+      expandG.append('circle').attr('r', 13).attr('fill', d => getGenColor(d.genSafeStr).accent).attr('stroke', '#fff').attr('stroke-width', 2.5).style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))');
+      expandG.append('text').attr('dy', 5).attr('text-anchor', 'middle').style('font-size', '18px').style('font-weight', '900').attr('fill', '#fff').text(d => d._children ? '+' : '−');
+      nodeEnter.filter(d => (d.children || d._children)).append('text').attr('x', HALF_W + 2).attr('y', 28).attr('text-anchor', 'middle').style('font-size', '9px').style('font-weight', '700').attr('fill', d => getGenColor(d.genSafeStr).accent).text(d => { const kids = (d.children || d._children || []).length; return kids > 0 ? kids + ' anak' : ''; });
 
-      // Pasangan
-      nodeEnter.append('text')
-        .attr('x', TEXT_X).attr('y', AVATAR_CY + 8)
-        .attr('text-anchor', 'start')
-        .style('font-size', '11px').style('font-weight', '500')
-        .attr('fill', '#64748b')
-        .text(d => { 
-          const p = d.data.pasangan; 
-          if (!p || p === '-') return ''; 
-          return '❤ ' + (p.length > 14 ? p.substring(0,14) + '…' : p); 
-        });
-
-      // No HP
-      nodeEnter.append('text')
-        .attr('x', TEXT_X).attr('y', AVATAR_CY + 24)
-        .attr('text-anchor', 'start')
-        .style('font-size', '10px').style('font-weight', '500')
-        .attr('fill', '#94a3b8')
-        .text(d => d.data.noHp ? '📞 ' + d.data.noHp : '');
-
-      // ---- TOMBOL EXPAND/COLLAPSE (+) / (–) ----
-      const expandG = nodeEnter.filter(d => d.children || d._children)
-        .append('g')
-        .attr('class', 'expand-btn')
-        .attr('transform', `translate(${HALF_W + 2}, 0)`)
-        .style('cursor', 'pointer')
-        .on('click', function(event, d) {
-          event.stopPropagation();
-          if (d.children) { d._children = d.children; d.children = null; } 
-          else { d.children = d._children; d._children = null; }
-          update(d);
-        });
-
-      expandG.append('circle')
-        .attr('r', 13)
-        .attr('fill', d => getGenColor(d.genSafeStr).accent)
-        .attr('stroke', '#fff').attr('stroke-width', 2.5)
-        .style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))');
-
-      expandG.append('text')
-        .attr('dy', 5).attr('text-anchor', 'middle')
-        .style('font-size', '18px').style('font-weight', '900')
-        .attr('fill', '#fff')
-        .text(d => d._children ? '+' : '−');
-
-      // Indikator Jumlah Anak (Di Bawah Tombol)
-      nodeEnter.filter(d => (d.children || d._children))
-        .append('text')
-        .attr('x', HALF_W + 2).attr('y', 28)
-        .attr('text-anchor', 'middle')
-        .style('font-size', '9px').style('font-weight', '700')
-        .attr('fill', d => getGenColor(d.genSafeStr).accent)
-        .text(d => { 
-          const kids = (d.children || d._children || []).length; 
-          return kids > 0 ? kids + ' anak' : ''; 
-        });
-
-      // ---- UPDATE TRANSITIONS ----
-      const nodeUpdate = node.merge(nodeEnter)
-        .transition().duration(500).ease(d3.easeCubicOut)
-        .attr('transform', d => `translate(${d.y},${d.x})`)
-        .style('opacity', 1);
-
+      const nodeUpdate = node.merge(nodeEnter).transition().duration(500).ease(d3.easeCubicOut).attr('transform', d => `translate(${d.y},${d.x})`).style('opacity', 1);
       nodeUpdate.select('.expand-btn text').text(d => d._children ? '+' : '−');
+      node.exit().transition().duration(400).attr('transform', d => `translate(${source.y},${source.x})`).style('opacity', 0).remove();
 
-      node.exit()
-        .transition().duration(400)
-        .attr('transform', d => `translate(${source.y},${source.x})`)
-        .style('opacity', 0).remove();
-
-      // ---- PEMBUATAN GARIS PENGHUBUNG (LINKS) ----
       const link = g.selectAll('path.link').data(links, d => d.target.id);
-
-      const linkEnter = link.enter().insert('path', 'g')
-        .attr('class', 'link')
-        .attr('d', () => { const o = { x: source.x0 || 0, y: source.y0 || 0 }; return diagonal(o, o); })
-        .style('opacity', 0);
-
-      link.merge(linkEnter)
-        .transition().duration(500).ease(d3.easeCubicOut)
-        .attr('d', d => diagonal(d.source, d.target))
-        .style('opacity', 1)
-        .attr('stroke', d => getGenColor(d.target.data.generasi || d.target.data.generation || 'Generasi 1').accent)
-        .attr('stroke-width', 2.5)
-        .attr('stroke-dasharray', d => d.target.data.status === 'Almarhum' ? '7,4' : 'none')
-        .attr('fill', 'none')
-        .attr('stroke-opacity', 0.55);
-
-      link.exit()
-        .transition().duration(300)
-        .style('opacity', 0).remove();
-
+      const linkEnter = link.enter().insert('path', 'g').attr('class', 'link').attr('d', () => { const o = { x: source.x0 || 0, y: source.y0 || 0 }; return diagonal(o, o); }).style('opacity', 0);
+      link.merge(linkEnter).transition().duration(500).ease(d3.easeCubicOut).attr('d', d => diagonal(d.source, d.target)).style('opacity', 1).attr('stroke', d => getGenColor(d.target.data.generasi || d.target.data.generation || 'Generasi 1').accent).attr('stroke-width', 2.5).attr('stroke-dasharray', d => d.target.data.status === 'Almarhum' ? '7,4' : 'none').attr('fill', 'none').attr('stroke-opacity', 0.55);
+      link.exit().transition().duration(300).style('opacity', 0).remove();
       nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
     }
 
-    function diagonal(s, d) { 
-      const mx = (s.y + d.y) / 2; 
-      return `M ${s.y} ${s.x} C ${mx} ${s.x}, ${mx} ${d.x}, ${d.y} ${d.x}`; 
-    }
+    function diagonal(s, d) { const mx = (s.y + d.y) / 2; return `M ${s.y} ${s.x} C ${mx} ${s.x}, ${mx} ${d.x}, ${d.y} ${d.x}`; }
 
     function click(event, d) {
-      const genStr = d.data.generasi || d.data.generation || '';
-      const nameStr = d.data.nama || d.data.name || '';
-      const c = getGenColor(genStr);
-      let imageHtml = '';
-      if (d.data.foto) {
-        imageHtml = `<div class="flex justify-center mb-5"><div class="w-28 h-28 rounded-full border-4 shadow-lg overflow-hidden" style="border-color:${c.border}"><img src="${getDisplayUrl(d.data.foto)}" class="w-full h-full object-cover"></div></div>`;
-      } else {
-        imageHtml = `<div class="flex justify-center mb-5"><div class="w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-lg" style="background:${c.bg};border:3px solid ${c.border}">${d.data.gender === 'P' ? '♀' : '♂'}</div></div>`;
-      }
+      const genStr = d.data.generasi || d.data.generation || ''; const nameStr = d.data.nama || d.data.name || ''; const c = getGenColor(genStr);
+      let imageHtml = d.data.foto ? `<div class="flex justify-center mb-5"><div class="w-28 h-28 rounded-full border-4 shadow-lg overflow-hidden" style="border-color:${c.border}"><img src="${getDisplayUrl(d.data.foto)}" class="w-full h-full object-cover"></div></div>` : `<div class="flex justify-center mb-5"><div class="w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-lg" style="background:${c.bg};border:3px solid ${c.border}">${d.data.gender === 'P' ? '♀' : '♂'}</div></div>`;
 
       Swal.fire({
         title: `<span class="font-black" style="color:${c.text}">${nameStr}</span>`,
@@ -1397,10 +795,7 @@
               ${d.data.noHp ? `<div class="flex items-center gap-3 text-sm"><span class="w-6 text-center">📞</span><a href="https://wa.me/${d.data.noHp.replace(/[\s\-().]/g, '').startsWith('0') ? '62' + d.data.noHp.replace(/[\s\-().]/g, '').slice(1) : d.data.noHp}" target="_blank" class="font-semibold text-emerald-600 hover:underline">${d.data.noHp}</a></div>` : ''}
             </div>
             <div class="grid grid-cols-2 gap-3">
-              ${(sessionRole === 'admin' || sessionGenerasi === genStr) ? `
-              <button onclick="window.triggerEdit('${d.data.id}')" class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-sm" style="background:#fefce8;color:#a16207;border:1.5px solid #fde68a"><i class="fas fa-edit"></i> Edit</button>
-              <button onclick="window.triggerDelete('${d.data.id}', '${nameStr}')" class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-sm" style="background:#fef2f2;color:#b91c1c;border:1.5px solid #fecaca"><i class="fas fa-trash-alt"></i> Hapus</button>
-              ` : `<p class="col-span-2 text-center text-slate-400 text-xs italic py-2"><i class="fas fa-lock mr-1"></i> Tidak memiliki akses edit data ini.</p>`}
+              ${(sessionRole === 'admin' || sessionGenerasi === genStr) ? `<button onclick="window.triggerEdit('${d.data.id}')" class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-sm" style="background:#fefce8;color:#a16207;border:1.5px solid #fde68a"><i class="fas fa-edit"></i> Edit</button><button onclick="window.triggerDelete('${d.data.id}', '${nameStr}')" class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-sm" style="background:#fef2f2;color:#b91c1c;border:1.5px solid #fecaca"><i class="fas fa-trash-alt"></i> Hapus</button>` : `<p class="col-span-2 text-center text-slate-400 text-xs italic py-2"><i class="fas fa-lock mr-1"></i> Tidak memiliki akses edit data ini.</p>`}
             </div>
           </div>`,
         showConfirmButton: false, showCloseButton: true, customClass: { popup: 'rounded-3xl', closeButton: 'focus:outline-none' }
@@ -1408,449 +803,74 @@
     }
   }
 
-  function resetZoom() { 
-    if (svg && zoom) {
-      svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(window.innerWidth / 2 - 140, 100).scale(0.75)); 
-    }
-  }
-
+  function resetZoom() { if (svg && zoom) { svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(window.innerWidth / 2 - 140, 100).scale(0.75)); } }
   function toggleInfoLegend() { document.getElementById('info-legend-panel').classList.toggle('hidden'); document.getElementById('info-legend-chevron').style.transform = document.getElementById('info-legend-panel').classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)'; }
   function toggleGenLegend() { document.getElementById('gen-legend-panel').classList.toggle('hidden'); document.getElementById('gen-legend-chevron').style.transform = document.getElementById('gen-legend-panel').classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)'; }
-  function toastWarning(msg) { Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3500, timerProgressBar: true, customClass: { popup: 'rounded-2xl shadow-2xl' }, didOpen: (t) => { t.addEventListener('mouseenter', Swal.stopTimer); t.addEventListener('mouseleave', Swal.resumeTimer); } }).fire({ icon: 'warning', title: msg }); }
+  function toastWarning(msg) { Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3500, timerProgressBar: true, customClass: { popup: 'rounded-2xl shadow-2xl' } }).fire({ icon: 'warning', title: msg }); }
 
   window.triggerEdit = function(id) {
     Swal.close(); Swal.fire({title: 'Mengambil Data...', didOpen: () => Swal.showLoading()});
     google.script.run.withSuccessHandler(data => {
-      Swal.close();
-      if(!data) return toastWarning('Data tidak ditemukan');
-      switchTab('form');
-      const safeNama = data.nama || data.name || '';
-      document.querySelector('#view-form h2').innerHTML = `Edit Data <span class="gradient-text">${safeNama}</span>`;
-      document.getElementById('edit-id').value = data.id; document.getElementById('nama').value = safeNama; document.getElementById('gender').value = data.gender; document.getElementById('generasi').value = data.generasi || data.generation;
+      Swal.close(); if(!data) return toastWarning('Data tidak ditemukan'); switchTab('form'); const safeNama = data.nama || data.name || '';
+      document.querySelector('#view-form h2').innerHTML = `Edit Data <span class="gradient-text">${safeNama}</span>`; document.getElementById('edit-id').value = data.id; document.getElementById('nama').value = safeNama; document.getElementById('gender').value = data.gender; document.getElementById('generasi').value = data.generasi || data.generation;
       loadParentsListWithSelection(data.generasi || data.generation, data.parentId);
-      document.getElementById('status').value = data.status; document.getElementById('pasangan').value = (data.pasangan === '-' ? '' : data.pasangan);
-      document.getElementById('alamat').value = data.alamat || ''; document.getElementById('noHp').value = data.noHp || ''; document.getElementById('tglMeninggal').value = data.tglMeninggal || '';
-      toggleTglMeninggal();
-      oldPhotoUrl = data.foto || ""; newPhotoData = "";
-      if (data.foto && data.foto.length > 5) {
-        const img = document.getElementById('preview-foto'); img.src = getDisplayUrl(data.foto); img.classList.remove('hidden'); document.getElementById('placeholder-foto').classList.add('hidden');
-      }
-      document.getElementById('anak-container').innerHTML = ''; anakCount = 0;
-      if (data.anak && data.anak !== '-') { const anakArray = data.anak.split(', '); anakArray.forEach(nA => { addAnakField(); document.getElementById(`anak-${anakCount}`).value = nA; }); }
-      currentStep = 1; document.getElementById('step-1').classList.remove('hidden'); document.getElementById('step-2').classList.add('hidden'); document.getElementById('step-3').classList.add('hidden');
-      document.querySelectorAll('.step-dot').forEach((dot, index) => { index === 0 ? dot.classList.add('active') : dot.classList.remove('active'); });
+      document.getElementById('status').value = data.status; document.getElementById('pasangan').value = (data.pasangan === '-' ? '' : data.pasangan); document.getElementById('alamat').value = data.alamat || ''; document.getElementById('noHp').value = data.noHp || ''; document.getElementById('tglMeninggal').value = data.tglMeninggal || ''; toggleTglMeninggal();
+      oldPhotoUrl = data.foto || ""; newPhotoData = ""; if (data.foto && data.foto.length > 5) { const img = document.getElementById('preview-foto'); img.src = getDisplayUrl(data.foto); img.classList.remove('hidden'); document.getElementById('placeholder-foto').classList.add('hidden'); }
+      document.getElementById('anak-container').innerHTML = ''; anakCount = 0; if (data.anak && data.anak !== '-') { const anakArray = data.anak.split(', '); anakArray.forEach(nA => { addAnakField(); document.getElementById(`anak-${anakCount}`).value = nA; }); }
+      currentStep = 1; document.getElementById('step-1').classList.remove('hidden'); document.getElementById('step-2').classList.add('hidden'); document.getElementById('step-3').classList.add('hidden'); document.querySelectorAll('.step-dot').forEach((dot, index) => { index === 0 ? dot.classList.add('active') : dot.classList.remove('active'); });
     }).withFailureHandler(err => Swal.fire('Error', err.message, 'error')).getMemberById(id);
   };
 
   window.triggerDelete = function(id, name) {
     Swal.fire({ title: 'Hapus Data?', text: `Yakin ingin menghapus ${name}?`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#cbd5e1', confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal' })
-    .then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({title: 'Menghapus...', didOpen: () => Swal.showLoading()});
-        google.script.run.withSuccessHandler(res => {
-          if(res.success) { Swal.fire('Terhapus!', res.message, 'success'); initializeTree(); loadDashboardStats(); } else { Swal.fire('Gagal', res.message, 'error'); }
-        }).deleteMember(id, sessionToken);
-      }
-    });
+    .then((result) => { if (result.isConfirmed) { Swal.fire({title: 'Menghapus...', didOpen: () => Swal.showLoading()}); google.script.run.withSuccessHandler(res => { if(res.success) { Swal.fire('Terhapus!', res.message, 'success'); initializeTree(); loadDashboardStats(); } else { Swal.fire('Gagal', res.message, 'error'); } }).deleteMember(id, sessionToken); } });
   };
 
   // --- AL-QUR'AN APP ---
   let quranSurahs = [];
-  function openQuranApp() {
-    switchTab('quran');
-    if (quranSurahs.length === 0) {
-      Swal.fire({title: 'Memuat Al-Qur\'an...', didOpen: () => Swal.showLoading()});
-      fetch('https://equran.id/api/v2/surat')
-        .then(res => res.json())
-        .then(res => {
-          Swal.close();
-          if(res.code === 200) {
-            quranSurahs = res.data;
-            renderSurahList(quranSurahs);
-            populateBookmarkDropdown(quranSurahs);
-          }
-        }).catch(err => { Swal.close(); toastWarning('Gagal memuat data Al-Qur\'an'); });
-    }
-    loadBookmark();
-  }
+  function openQuranApp() { switchTab('quran'); if (quranSurahs.length === 0) { Swal.fire({title: 'Memuat Al-Qur\'an...', didOpen: () => Swal.showLoading()}); fetch('https://equran.id/api/v2/surat').then(res => res.json()).then(res => { Swal.close(); if(res.code === 200) { quranSurahs = res.data; renderSurahList(quranSurahs); populateBookmarkDropdown(quranSurahs); } }).catch(err => { Swal.close(); toastWarning('Gagal memuat data Al-Qur\'an'); }); } loadBookmark(); }
+  function renderSurahList(surahs) { const container = document.getElementById('surah-list'); container.innerHTML = surahs.map(s => `<div onclick="openSurahDetail(${s.nomor}, '${s.namaLatin.replace(/'/g, "\\'")}')" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-md hover:border-brand-300 transition-all cursor-pointer flex items-center justify-between group"><div class="flex items-center gap-4"><div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-sm group-hover:bg-brand-500 group-hover:text-white transition-colors">${s.nomor}</div><div><h4 class="font-bold text-slate-800">${s.namaLatin}</h4><p class="text-xs text-slate-500">${s.arti} • ${s.jumlahAyat} Ayat</p></div></div><div class="font-arabic text-xl text-brand-600">${s.nama}</div></div>`).join(''); }
+  function filterSurah() { const q = document.getElementById('search-surah').value.toLowerCase(); const filtered = quranSurahs.filter(s => s.namaLatin.toLowerCase().includes(q) || s.arti.toLowerCase().includes(q)); renderSurahList(filtered); }
+  function openSurahDetail(nomor, namaLatin) { Swal.fire({title: `Memuat Surah...`, didOpen: () => Swal.showLoading()}); fetch(`https://equran.id/api/v2/surat/${nomor}`).then(res => res.json()).then(res => { if(res.code === 200) { const ayatHtml = res.data.ayat.map(a => `<div class="border-b border-slate-100 py-4 last:border-0"><div class="flex justify-between items-start gap-4 mb-3"><div class="w-8 h-8 shrink-0 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs font-bold">${a.nomorAyat}</div><div class="font-arabic text-2xl md:text-3xl text-right leading-loose text-slate-800 flex-1">${a.teksArab}</div></div><p class="text-brand-600 text-sm font-medium mb-1">${a.teksLatin}</p><p class="text-slate-600 text-sm leading-relaxed">${a.teksIndonesia}</p><div class="mt-3 text-right"><button onclick="setBookmarkFromRead('${namaLatin.replace(/'/g, "\\'")}', ${a.nomorAyat})" class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-lg font-bold hover:bg-amber-200 transition-colors"><i class="fas fa-bookmark mr-1"></i> Tandai</button></div></div>`).join(''); Swal.fire({ title: `<div class="text-2xl font-black text-brand-700">${namaLatin}</div><div class="text-sm font-medium text-slate-500">${res.data.arti}</div>`, html: `<div class="text-left mt-4 h-[60vh] overflow-y-auto scrollbar-hide pr-2">${ayatHtml}</div>`, showCloseButton: true, showConfirmButton: false, customClass: { popup: 'rounded-3xl w-full max-w-2xl' } }); } }).catch(err => { Swal.close(); toastWarning('Gagal memuat ayat'); }); }
+  function populateBookmarkDropdown(surahs) { const sel = document.getElementById('bookmark-surah'); if(sel.options.length <= 1) { surahs.forEach(s => { const opt = document.createElement('option'); opt.value = s.namaLatin; opt.textContent = `${s.nomor}. ${s.namaLatin}`; sel.appendChild(opt); }); } }
+  function saveBookmark() { const surah = document.getElementById('bookmark-surah').value; const ayat = document.getElementById('bookmark-ayat').value; if(!surah || !ayat) return toastWarning('Pilih surah dan isi ayat!'); const data = `${surah} Ayat ${ayat}`; localStorage.setItem('quran_bookmark', data); loadBookmark(); toastWarning('Penanda bacaan disimpan!'); }
+  function setBookmarkFromRead(surah, ayat) { localStorage.setItem('quran_bookmark', `${surah} Ayat ${ayat}`); loadBookmark(); toastWarning(`Tersimpan: ${surah} Ayat ${ayat}`); }
+  function loadBookmark() { const saved = localStorage.getItem('quran_bookmark'); const statusDiv = document.getElementById('bookmark-active-status'); const lbl = document.getElementById('lbl-bookmark-text'); if(saved && statusDiv && lbl) { statusDiv.classList.remove('hidden'); lbl.textContent = saved; } else if (statusDiv) { statusDiv.classList.add('hidden'); } }
+  function clearBookmark() { localStorage.removeItem('quran_bookmark'); loadBookmark(); document.getElementById('bookmark-surah').value = ''; document.getElementById('bookmark-ayat').value = ''; }
 
-  function renderSurahList(surahs) {
-    const container = document.getElementById('surah-list');
-    container.innerHTML = surahs.map(s => `
-      <div onclick="openSurahDetail(${s.nomor}, '${s.namaLatin.replace(/'/g, "\\'")}')" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-md hover:border-brand-300 transition-all cursor-pointer flex items-center justify-between group">
-        <div class="flex items-center gap-4">
-          <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-sm group-hover:bg-brand-500 group-hover:text-white transition-colors">${s.nomor}</div>
-          <div>
-            <h4 class="font-bold text-slate-800">${s.namaLatin}</h4>
-            <p class="text-xs text-slate-500">${s.arti} • ${s.jumlahAyat} Ayat</p>
-          </div>
-        </div>
-        <div class="font-arabic text-xl text-brand-600">${s.nama}</div>
-      </div>
-    `).join('');
-  }
-
-  function filterSurah() {
-    const q = document.getElementById('search-surah').value.toLowerCase();
-    const filtered = quranSurahs.filter(s => s.namaLatin.toLowerCase().includes(q) || s.arti.toLowerCase().includes(q));
-    renderSurahList(filtered);
-  }
-
-  function openSurahDetail(nomor, namaLatin) {
-    Swal.fire({title: `Memuat Surah...`, didOpen: () => Swal.showLoading()});
-    fetch(`https://equran.id/api/v2/surat/${nomor}`)
-      .then(res => res.json())
-      .then(res => {
-        if(res.code === 200) {
-          const ayatHtml = res.data.ayat.map(a => `
-            <div class="border-b border-slate-100 py-4 last:border-0">
-              <div class="flex justify-between items-start gap-4 mb-3">
-                <div class="w-8 h-8 shrink-0 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs font-bold">${a.nomorAyat}</div>
-                <div class="font-arabic text-2xl md:text-3xl text-right leading-loose text-slate-800 flex-1">${a.teksArab}</div>
-              </div>
-              <p class="text-brand-600 text-sm font-medium mb-1">${a.teksLatin}</p>
-              <p class="text-slate-600 text-sm leading-relaxed">${a.teksIndonesia}</p>
-              <div class="mt-3 text-right">
-                <button onclick="setBookmarkFromRead('${namaLatin.replace(/'/g, "\\'")}', ${a.nomorAyat})" class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-lg font-bold hover:bg-amber-200 transition-colors"><i class="fas fa-bookmark mr-1"></i> Tandai</button>
-              </div>
-            </div>
-          `).join('');
-          
-          Swal.fire({
-            title: `<div class="text-2xl font-black text-brand-700">${namaLatin}</div><div class="text-sm font-medium text-slate-500">${res.data.arti}</div>`,
-            html: `<div class="text-left mt-4 h-[60vh] overflow-y-auto scrollbar-hide pr-2">${ayatHtml}</div>`,
-            showCloseButton: true, showConfirmButton: false, customClass: { popup: 'rounded-3xl w-full max-w-2xl' }
-          });
-        }
-      }).catch(err => { Swal.close(); toastWarning('Gagal memuat ayat'); });
-  }
-
-  function populateBookmarkDropdown(surahs) {
-    const sel = document.getElementById('bookmark-surah');
-    if(sel.options.length <= 1) {
-      surahs.forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s.namaLatin; opt.textContent = `${s.nomor}. ${s.namaLatin}`;
-        sel.appendChild(opt);
-      });
-    }
-  }
-
-  function saveBookmark() {
-    const surah = document.getElementById('bookmark-surah').value;
-    const ayat = document.getElementById('bookmark-ayat').value;
-    if(!surah || !ayat) return toastWarning('Pilih surah dan isi ayat!');
-    const data = `${surah} Ayat ${ayat}`;
-    localStorage.setItem('quran_bookmark', data);
-    loadBookmark();
-    toastWarning('Penanda bacaan disimpan!');
-  }
-
-  function setBookmarkFromRead(surah, ayat) {
-    localStorage.setItem('quran_bookmark', `${surah} Ayat ${ayat}`);
-    loadBookmark();
-    toastWarning(`Tersimpan: ${surah} Ayat ${ayat}`);
-  }
-
-  function loadBookmark() {
-    const saved = localStorage.getItem('quran_bookmark');
-    const statusDiv = document.getElementById('bookmark-active-status');
-    const lbl = document.getElementById('lbl-bookmark-text');
-    if(saved && statusDiv && lbl) {
-      statusDiv.classList.remove('hidden');
-      lbl.textContent = saved;
-    } else if (statusDiv) {
-      statusDiv.classList.add('hidden');
-    }
-  }
-
-  function clearBookmark() {
-    localStorage.removeItem('quran_bookmark');
-    loadBookmark();
-    document.getElementById('bookmark-surah').value = '';
-    document.getElementById('bookmark-ayat').value = '';
-  }
-
-  // --- TUTORIAL SHOLAT ---
-  window.openSholatTutorial = function() {
-    Swal.fire({
-      title: '<span class="text-2xl font-black text-emerald-800"><i class="fas fa-mosque mr-2"></i>Tutorial Shalat</span>',
-      html: `
-        <div class="text-left mt-2">
-          <div class="flex gap-2 mb-4 bg-slate-100 p-1 rounded-xl overflow-x-auto scrollbar-hide">
-            <button onclick="document.getElementById('sholat-tab-1').classList.remove('hidden');document.getElementById('sholat-tab-2').classList.add('hidden');this.classList.add('bg-white','shadow');this.nextElementSibling.classList.remove('bg-white','shadow');" class="flex-1 py-2 px-4 rounded-lg font-bold text-sm bg-white shadow text-emerald-700 whitespace-nowrap transition-all">Niat Shalat</button>
-            <button onclick="document.getElementById('sholat-tab-2').classList.remove('hidden');document.getElementById('sholat-tab-1').classList.add('hidden');this.classList.add('bg-white','shadow');this.previousElementSibling.classList.remove('bg-white','shadow');" class="flex-1 py-2 px-4 rounded-lg font-bold text-sm text-slate-600 whitespace-nowrap transition-all">Tata Cara & Bacaan</button>
-          </div>
-          <div id="sholat-tab-1" class="space-y-4 animate-fade-in max-h-[50vh] overflow-y-auto pr-2 scrollbar-hide">
-            <select id="sel-niat" class="w-full p-3 border-2 border-slate-200 rounded-xl font-bold text-emerald-800 focus:border-emerald-500 outline-none" onchange="changeNiat(this.value)">
-              <option value="subuh">Shalat Subuh (2 Rakaat)</option>
-              <option value="dzuhur">Shalat Dzuhur (4 Rakaat)</option>
-              <option value="ashar">Shalat Ashar (4 Rakaat)</option>
-              <option value="maghrib">Shalat Maghrib (3 Rakaat)</option>
-              <option value="isya">Shalat Isya (4 Rakaat)</option>
-            </select>
-            <div id="niat-content" class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl">
-              <h5 class="font-bold text-emerald-800 mb-3 border-b border-emerald-200 pb-2">Niat Shalat Subuh</h5>
-              <p class="font-arabic text-2xl text-right leading-loose mb-3 text-slate-800">أُصَلِّى فَرْضَ الصُّبْح رَكَعتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لله تَعَالَى</p>
-              <p class="text-sm font-medium text-emerald-700 mb-2">Ushalli fardhos subhi rak'ataini mustaqbilal qiblati adaa-an lillahi ta'aala.</p>
-              <p class="text-xs text-slate-600 italic">"Saya berniat shalat fardhu Subuh dua rakaat menghadap kiblat karena Allah Ta'ala."</p>
-            </div>
-          </div>
-          <div id="sholat-tab-2" class="hidden space-y-4 animate-fade-in max-h-[50vh] overflow-y-auto pr-2 scrollbar-hide">
-            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-              <h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">1</span> Takbiratul Ihram & Iftitah</h5>
-              <p class="font-arabic text-xl text-right leading-loose my-2">اللَّهُ أَكْبَرُ</p>
-              <p class="text-sm font-medium text-brand-600 mb-2">Allahu Akbar</p>
-              <div class="border-t border-slate-200 pt-2 mt-2">
-                <p class="text-xs font-bold text-slate-500 mb-1">Doa Iftitah:</p>
-                <p class="font-arabic text-xl text-right leading-loose mb-2">اللَّهُ أَكْبَرُ كَبِيرًا وَالْحَمْدُ لِلَّهِ كَثِيرًا وَسُبْحَانَ اللَّهِ بُكْرَةً وَأَصِيلا...</p>
-                <p class="text-xs text-slate-600 italic">"Allah Maha Besar dengan sebesar-besarnya, segala puji bagi Allah dengan pujian yang banyak..."</p>
-              </div>
-            </div>
-            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-              <h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">2</span> Membaca Al-Fatihah</h5>
-              <p class="font-arabic text-xl text-right leading-loose my-2">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ...</p>
-              <p class="text-xs text-slate-600 italic">"Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang. Segala puji bagi Allah, Tuhan semesta alam..."</p>
-            </div>
-            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-              <h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">3</span> Ruku'</h5>
-              <p class="font-arabic text-xl text-right leading-loose my-2">سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ</p>
-              <p class="text-sm font-medium text-brand-600 mb-1">Subhaana rabbiyal 'adziimi wa bihamdih (3x)</p>
-              <p class="text-xs text-slate-600 italic">"Maha Suci Tuhanku Yang Maha Agung dan pujian untuk-Nya."</p>
-            </div>
-            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-              <h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">4</span> I'tidal</h5>
-              <p class="font-arabic text-xl text-right leading-loose my-2">سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ. رَبَّنَا لَكَ الْحَمْدُ</p>
-              <p class="text-sm font-medium text-brand-600 mb-1">Sami'allahu liman hamidah. Rabbanaa lakal hamdu.</p>
-            </div>
-            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-              <h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">5</span> Sujud</h5>
-              <p class="font-arabic text-xl text-right leading-loose my-2">سُبْحَانَ رَبِّيَ الْأَعْلَى وَبِحَمْدِهِ</p>
-              <p class="text-sm font-medium text-brand-600 mb-1">Subhaana rabbiyal a'laa wa bihamdih (3x)</p>
-            </div>
-            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-              <h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">6</span> Duduk di Antara Dua Sujud</h5>
-              <p class="font-arabic text-xl text-right leading-loose my-2">رَبِّ اغْفِرْ لِي وَارْحَمْنِي وَاجْبُرْنِي وَارْفَعْنِي وَارْزُقْنِي وَاهْدِنِي وَعَافِنِي وَاعْفُ عَنِّي</p>
-              <p class="text-sm font-medium text-brand-600 mb-1">Rabbighfirlii warhamnii wajburnii warfa'nii warzuqnii wahdinii wa'aafinii wa'fu 'annii.</p>
-            </div>
-            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-              <h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">7</span> Tasyahud (Tahiyat) Akhir & Salam</h5>
-              <p class="font-arabic text-xl text-right leading-loose my-2">التَّحِيَّاتُ الْمُبَارَكَاتُ الصَّلَوَاتُ الطَّيِّبَاتُ لِلَّهِ...</p>
-              <p class="text-xs text-slate-600 italic mb-2">"Segala kehormatan, keberkahan, rahmat dan keselamatan serta kebaikan hanyalah kepunyaan Allah..."</p>
-              <div class="border-t border-slate-200 pt-2">
-                <p class="font-arabic text-xl text-right leading-loose my-2">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ</p>
-                <p class="text-sm font-medium text-brand-600">Assalaamu'alaikum warahmatullah.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `,
-      showConfirmButton: false, showCloseButton: true, customClass: { popup: 'rounded-3xl w-full max-w-md' }
-    });
-
-    window.changeNiat = function(val) {
-      const data = {
-        subuh: {j:"Subuh", r:"dua", a:"أُصَلِّى فَرْضَ الصُّبْح رَكَعتَيْنِ", l:"Ushalli fardhos subhi rak'ataini"},
-        dzuhur: {j:"Dzuhur", r:"empat", a:"أُصَلِّى فَرْضَ الظُّهْرِ أَرْبَعَ رَكَعَاتٍ", l:"Ushalli fardhodz dzuhri arba'a raka'aatin"},
-        ashar: {j:"Ashar", r:"empat", a:"أُصَلِّى فَرْضَ العَصْرِ أَرْبَعَ رَكَعَاتٍ", l:"Ushalli fardhol 'ashri arba'a raka'aatin"},
-        maghrib: {j:"Maghrib", r:"tiga", a:"أُصَلِّى فَرْضَ المَغْرِبِ ثَلاَثَ رَكَعَاتٍ", l:"Ushalli fardhol maghribi tsalaatsa raka'aatin"},
-        isya: {j:"Isya", r:"empat", a:"أُصَلِّى فَرْضَ العِشَاءِ أَرْبَعَ رَكَعَاتٍ", l:"Ushalli fardhol 'isyaa-i arba'a raka'aatin"}
-      };
-      const sel = data[val];
-      document.getElementById('niat-content').innerHTML = `
-        <h5 class="font-bold text-emerald-800 mb-3 border-b border-emerald-200 pb-2">Niat Shalat ${sel.j}</h5>
-        <p class="font-arabic text-2xl text-right leading-loose mb-3 text-slate-800">${sel.a} مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لله تَعَالَى</p>
-        <p class="text-sm font-medium text-emerald-700 mb-2">${sel.l} mustaqbilal qiblati adaa-an lillahi ta'aala.</p>
-        <p class="text-xs text-slate-600 italic">"Saya berniat shalat fardhu ${sel.j} ${sel.r} rakaat menghadap kiblat karena Allah Ta'ala."</p>
-      `;
-    };
+  // --- TUTORIAL SHOLAT & WARIS ---
+  window.openSholatTutorial = function() { Swal.fire({ title: '<span class="text-2xl font-black text-emerald-800"><i class="fas fa-mosque mr-2"></i>Tutorial Shalat</span>', html: `<div class="text-left mt-2"><div class="flex gap-2 mb-4 bg-slate-100 p-1 rounded-xl overflow-x-auto scrollbar-hide"><button onclick="document.getElementById('sholat-tab-1').classList.remove('hidden');document.getElementById('sholat-tab-2').classList.add('hidden');this.classList.add('bg-white','shadow');this.nextElementSibling.classList.remove('bg-white','shadow');" class="flex-1 py-2 px-4 rounded-lg font-bold text-sm bg-white shadow text-emerald-700 whitespace-nowrap transition-all">Niat Shalat</button><button onclick="document.getElementById('sholat-tab-2').classList.remove('hidden');document.getElementById('sholat-tab-1').classList.add('hidden');this.classList.add('bg-white','shadow');this.previousElementSibling.classList.remove('bg-white','shadow');" class="flex-1 py-2 px-4 rounded-lg font-bold text-sm text-slate-600 whitespace-nowrap transition-all">Tata Cara & Bacaan</button></div><div id="sholat-tab-1" class="space-y-4 animate-fade-in max-h-[50vh] overflow-y-auto pr-2 scrollbar-hide"><select id="sel-niat" class="w-full p-3 border-2 border-slate-200 rounded-xl font-bold text-emerald-800 focus:border-emerald-500 outline-none" onchange="changeNiat(this.value)"><option value="subuh">Shalat Subuh (2 Rakaat)</option><option value="dzuhur">Shalat Dzuhur (4 Rakaat)</option><option value="ashar">Shalat Ashar (4 Rakaat)</option><option value="maghrib">Shalat Maghrib (3 Rakaat)</option><option value="isya">Shalat Isya (4 Rakaat)</option></select><div id="niat-content" class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl"><h5 class="font-bold text-emerald-800 mb-3 border-b border-emerald-200 pb-2">Niat Shalat Subuh</h5><p class="font-arabic text-2xl text-right leading-loose mb-3 text-slate-800">أُصَلِّى فَرْضَ الصُّبْح رَكَعتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لله تَعَالَى</p><p class="text-sm font-medium text-emerald-700 mb-2">Ushalli fardhos subhi rak'ataini mustaqbilal qiblati adaa-an lillahi ta'aala.</p><p class="text-xs text-slate-600 italic">"Saya berniat shalat fardhu Subuh dua rakaat menghadap kiblat karena Allah Ta'ala."</p></div></div><div id="sholat-tab-2" class="hidden space-y-4 animate-fade-in max-h-[50vh] overflow-y-auto pr-2 scrollbar-hide"><div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">1</span> Takbiratul Ihram & Iftitah</h5><p class="font-arabic text-xl text-right leading-loose my-2">اللَّهُ أَكْبَرُ</p><p class="text-sm font-medium text-brand-600 mb-2">Allahu Akbar</p><div class="border-t border-slate-200 pt-2 mt-2"><p class="text-xs font-bold text-slate-500 mb-1">Doa Iftitah:</p><p class="font-arabic text-xl text-right leading-loose mb-2">اللَّهُ أَكْبَرُ كَبِيرًا وَالْحَمْدُ لِلَّهِ كَثِيرًا وَسُبْحَانَ اللَّهِ بُكْرَةً وَأَصِيلا...</p><p class="text-xs text-slate-600 italic">"Allah Maha Besar dengan sebesar-besarnya, segala puji bagi Allah dengan pujian yang banyak..."</p></div></div><div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">2</span> Membaca Al-Fatihah</h5><p class="font-arabic text-xl text-right leading-loose my-2">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ...</p><p class="text-xs text-slate-600 italic">"Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang. Segala puji bagi Allah, Tuhan semesta alam..."</p></div><div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">3</span> Ruku'</h5><p class="font-arabic text-xl text-right leading-loose my-2">سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ</p><p class="text-sm font-medium text-brand-600 mb-1">Subhaana rabbiyal 'adziimi wa bihamdih (3x)</p><p class="text-xs text-slate-600 italic">"Maha Suci Tuhanku Yang Maha Agung dan pujian untuk-Nya."</p></div><div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">4</span> I'tidal</h5><p class="font-arabic text-xl text-right leading-loose my-2">سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ. رَبَّنَا لَكَ الْحَمْدُ</p><p class="text-sm font-medium text-brand-600 mb-1">Sami'allahu liman hamidah. Rabbanaa lakal hamdu.</p></div><div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">5</span> Sujud</h5><p class="font-arabic text-xl text-right leading-loose my-2">سُبْحَانَ رَبِّيَ الْأَعْلَى وَبِحَمْدِهِ</p><p class="text-sm font-medium text-brand-600 mb-1">Subhaana rabbiyal a'laa wa bihamdih (3x)</p></div><div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">6</span> Duduk di Antara Dua Sujud</h5><p class="font-arabic text-xl text-right leading-loose my-2">رَبِّ اغْفِرْ لِي وَارْحَمْنِي وَاجْبُرْنِي وَارْفَعْنِي وَارْزُقْنِي وَاهْدِنِي وَعَافِنِي وَاعْفُ عَنِّي</p><p class="text-sm font-medium text-brand-600 mb-1">Rabbighfirlii warhamnii wajburnii warfa'nii warzuqnii wahdinii wa'aafinii wa'fu 'annii.</p></div><div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><h5 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><span class="bg-brand-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">7</span> Tasyahud (Tahiyat) Akhir & Salam</h5><p class="font-arabic text-xl text-right leading-loose my-2">التَّحِيَّاتُ الْمُبَارَكَاتُ الصَّلَوَاتُ الطَّيِّبَاتُ لِلَّهِ...</p><p class="text-xs text-slate-600 italic mb-2">"Segala kehormatan, keberkahan, rahmat dan keselamatan serta kebaikan hanyalah kepunyaan Allah..."</p><div class="border-t border-slate-200 pt-2"><p class="font-arabic text-xl text-right leading-loose my-2">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ</p><p class="text-sm font-medium text-brand-600">Assalaamu'alaikum warahmatullah.</p></div></div></div></div>`, showConfirmButton: false, showCloseButton: true, customClass: { popup: 'rounded-3xl w-full max-w-md' } });
+    window.changeNiat = function(val) { const data = { subuh: {j:"Subuh", r:"dua", a:"أُصَلِّى فَرْضَ الصُّبْح رَكَعتَيْنِ", l:"Ushalli fardhos subhi rak'ataini"}, dzuhur: {j:"Dzuhur", r:"empat", a:"أُصَلِّى فَرْضَ الظُّهْرِ أَرْبَعَ رَكَعَاتٍ", l:"Ushalli fardhodz dzuhri arba'a raka'aatin"}, ashar: {j:"Ashar", r:"empat", a:"أُصَلِّى فَرْضَ العَصْرِ أَرْبَعَ رَكَعَاتٍ", l:"Ushalli fardhol 'ashri arba'a raka'aatin"}, maghrib: {j:"Maghrib", r:"tiga", a:"أُصَلِّى فَرْضَ المَغْرِبِ ثَلاَثَ رَكَعَاتٍ", l:"Ushalli fardhol maghribi tsalaatsa raka'aatin"}, isya: {j:"Isya", r:"empat", a:"أُصَلِّى فَرْضَ العِشَاءِ أَرْبَعَ رَكَعَاتٍ", l:"Ushalli fardhol 'isyaa-i arba'a raka'aatin"} }; const sel = data[val]; document.getElementById('niat-content').innerHTML = `<h5 class="font-bold text-emerald-800 mb-3 border-b border-emerald-200 pb-2">Niat Shalat ${sel.j}</h5><p class="font-arabic text-2xl text-right leading-loose mb-3 text-slate-800">${sel.a} مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لله تَعَالَى</p><p class="text-sm font-medium text-emerald-700 mb-2">${sel.l} mustaqbilal qiblati adaa-an lillahi ta'aala.</p><p class="text-xs text-slate-600 italic">"Saya berniat shalat fardhu ${sel.j} ${sel.r} rakaat menghadap kiblat karena Allah Ta'ala."</p>`; };
   };
 
-  // --- KALKULATOR WARIS (FARAIDH) ---
   window.openKalkulatorWaris = function() {
-    Swal.fire({
-      title: '<span class="text-2xl font-black" style="color:#9a3412"><i class="fas fa-balance-scale mr-2"></i>Kalkulator Waris</span>',
-      html: `
-        <div class="text-left mt-2 space-y-4 max-h-[60vh] overflow-y-auto pr-2 scrollbar-hide">
-          <div class="bg-orange-50 border border-orange-200 p-4 rounded-2xl">
-            <h5 class="font-bold text-orange-900 mb-2">1. Total Harta Peninggalan</h5>
-            <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-500">Rp</span>
-              <input type="number" id="waris-total" class="w-full pl-10 pr-3 py-2 border-2 border-orange-200 rounded-xl focus:border-orange-500 outline-none font-bold text-slate-800" placeholder="Contoh: 100000000">
-            </div>
-            <p class="text-[10px] text-orange-700 mt-1 italic">*Harta bersih (setelah dikurangi hutang & biaya jenazah)</p>
-          </div>
-          
-          <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-3">
-            <h5 class="font-bold text-slate-800 border-b pb-2">2. Ahli Waris yang Ditinggalkan</h5>
-            
-            <div class="flex items-center justify-between">
-              <label class="text-sm font-bold text-slate-700">Suami / Istri</label>
-              <select id="waris-pasangan" class="border-2 border-slate-200 rounded-lg px-2 py-1 text-sm outline-none focus:border-orange-500">
-                <option value="none">Tidak ada</option>
-                <option value="suami">Suami (1)</option>
-                <option value="istri1">Istri (1)</option>
-                <option value="istri2">Istri (2)</option>
-                <option value="istri3">Istri (3)</option>
-                <option value="istri4">Istri (4)</option>
-              </select>
-            </div>
-            
-            <div class="flex items-center justify-between">
-              <label class="text-sm font-bold text-slate-700">Anak Laki-laki</label>
-              <div class="flex items-center gap-2">
-                <button onclick="document.getElementById('waris-al').value = Math.max(0, parseInt(document.getElementById('waris-al').value)-1)" class="w-6 h-6 rounded bg-slate-200 font-bold">-</button>
-                <input type="number" id="waris-al" value="0" min="0" class="w-10 text-center font-bold border-2 border-slate-200 rounded outline-none">
-                <button onclick="document.getElementById('waris-al').value = parseInt(document.getElementById('waris-al').value)+1" class="w-6 h-6 rounded bg-slate-200 font-bold">+</button>
-              </div>
-            </div>
-            
-            <div class="flex items-center justify-between">
-              <label class="text-sm font-bold text-slate-700">Anak Perempuan</label>
-              <div class="flex items-center gap-2">
-                <button onclick="document.getElementById('waris-ap').value = Math.max(0, parseInt(document.getElementById('waris-ap').value)-1)" class="w-6 h-6 rounded bg-slate-200 font-bold">-</button>
-                <input type="number" id="waris-ap" value="0" min="0" class="w-10 text-center font-bold border-2 border-slate-200 rounded outline-none">
-                <button onclick="document.getElementById('waris-ap').value = parseInt(document.getElementById('waris-ap').value)+1" class="w-6 h-6 rounded bg-slate-200 font-bold">+</button>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between">
-              <label class="text-sm font-bold text-slate-700">Bapak</label>
-              <input type="checkbox" id="waris-bapak" class="w-5 h-5 accent-orange-500">
-            </div>
-
-            <div class="flex items-center justify-between">
-              <label class="text-sm font-bold text-slate-700">Ibu</label>
-              <input type="checkbox" id="waris-ibu" class="w-5 h-5 accent-orange-500">
-            </div>
-          </div>
-
-          <button onclick="hitungWaris()" class="w-full bg-gradient-to-r from-orange-500 to-orange-700 text-white py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-transform active:scale-95 text-lg">
-            <i class="fas fa-calculator mr-2"></i> Hitung Pembagian
-          </button>
-          
-          <div id="waris-hasil" class="hidden bg-emerald-50 border-2 border-emerald-200 p-4 rounded-2xl mt-4"></div>
-        </div>
-      `,
-      showConfirmButton: false, showCloseButton: true, customClass: { popup: 'rounded-3xl w-full max-w-md' }
-    });
+    Swal.fire({ title: '<span class="text-2xl font-black" style="color:#9a3412"><i class="fas fa-balance-scale mr-2"></i>Kalkulator Waris</span>', html: `<div class="text-left mt-2 space-y-4 max-h-[60vh] overflow-y-auto pr-2 scrollbar-hide"><div class="bg-orange-50 border border-orange-200 p-4 rounded-2xl"><h5 class="font-bold text-orange-900 mb-2">1. Total Harta Peninggalan</h5><div class="relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-500">Rp</span><input type="number" id="waris-total" class="w-full pl-10 pr-3 py-2 border-2 border-orange-200 rounded-xl focus:border-orange-500 outline-none font-bold text-slate-800" placeholder="Contoh: 100000000"></div><p class="text-[10px] text-orange-700 mt-1 italic">*Harta bersih (setelah dikurangi hutang & biaya jenazah)</p></div><div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-3"><h5 class="font-bold text-slate-800 border-b pb-2">2. Ahli Waris yang Ditinggalkan</h5><div class="flex items-center justify-between"><label class="text-sm font-bold text-slate-700">Suami / Istri</label><select id="waris-pasangan" class="border-2 border-slate-200 rounded-lg px-2 py-1 text-sm outline-none focus:border-orange-500"><option value="none">Tidak ada</option><option value="suami">Suami (1)</option><option value="istri1">Istri (1)</option><option value="istri2">Istri (2)</option><option value="istri3">Istri (3)</option><option value="istri4">Istri (4)</option></select></div><div class="flex items-center justify-between"><label class="text-sm font-bold text-slate-700">Anak Laki-laki</label><div class="flex items-center gap-2"><button onclick="document.getElementById('waris-al').value = Math.max(0, parseInt(document.getElementById('waris-al').value)-1)" class="w-6 h-6 rounded bg-slate-200 font-bold">-</button><input type="number" id="waris-al" value="0" min="0" class="w-10 text-center font-bold border-2 border-slate-200 rounded outline-none"><button onclick="document.getElementById('waris-al').value = parseInt(document.getElementById('waris-al').value)+1" class="w-6 h-6 rounded bg-slate-200 font-bold">+</button></div></div><div class="flex items-center justify-between"><label class="text-sm font-bold text-slate-700">Anak Perempuan</label><div class="flex items-center gap-2"><button onclick="document.getElementById('waris-ap').value = Math.max(0, parseInt(document.getElementById('waris-ap').value)-1)" class="w-6 h-6 rounded bg-slate-200 font-bold">-</button><input type="number" id="waris-ap" value="0" min="0" class="w-10 text-center font-bold border-2 border-slate-200 rounded outline-none"><button onclick="document.getElementById('waris-ap').value = parseInt(document.getElementById('waris-ap').value)+1" class="w-6 h-6 rounded bg-slate-200 font-bold">+</button></div></div><div class="flex items-center justify-between"><label class="text-sm font-bold text-slate-700">Bapak</label><input type="checkbox" id="waris-bapak" class="w-5 h-5 accent-orange-500"></div><div class="flex items-center justify-between"><label class="text-sm font-bold text-slate-700">Ibu</label><input type="checkbox" id="waris-ibu" class="w-5 h-5 accent-orange-500"></div></div><button onclick="hitungWaris()" class="w-full bg-gradient-to-r from-orange-500 to-orange-700 text-white py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-transform active:scale-95 text-lg"><i class="fas fa-calculator mr-2"></i> Hitung Pembagian</button><div id="waris-hasil" class="hidden bg-emerald-50 border-2 border-emerald-200 p-4 rounded-2xl mt-4"></div></div>`, showConfirmButton: false, showCloseButton: true, customClass: { popup: 'rounded-3xl w-full max-w-md' } });
   };
+  window.hitungWaris = function() { const totalInput = document.getElementById('waris-total').value; if(!totalInput || totalInput <= 0) return toastWarning('Masukkan total harta yang valid!'); const total = parseFloat(totalInput); const psg = document.getElementById('waris-pasangan').value; const al = parseInt(document.getElementById('waris-al').value) || 0; const ap = parseInt(document.getElementById('waris-ap').value) || 0; const bapak = document.getElementById('waris-bapak').checked; const ibu = document.getElementById('waris-ibu').checked; let hasAnak = (al > 0 || ap > 0); let porsi = []; let sisa = 1.0;  if(psg === 'suami') { let p = hasAnak ? 1/4 : 1/2; porsi.push({n:'Suami', p:p}); sisa -= p; } else if(psg.startsWith('istri')) {  let jml = parseInt(psg.replace('istri','')); let p = hasAnak ? 1/8 : 1/4;  porsi.push({n:`Istri (${jml} org)`, p:p, perOrg: p/jml}); sisa -= p;  } if(ibu) { let p = hasAnak ? 1/6 : 1/3; porsi.push({n:'Ibu', p:p}); sisa -= p; } if(bapak) { let p = 1/6; porsi.push({n:'Bapak', p:p}); sisa -= p; }  if(sisa < 0) { let totalP = porsi.reduce((sum, item) => sum + item.p, 0); porsi.forEach(item => item.p = item.p / totalP); sisa = 0; } if(sisa > 0) { if(al > 0) { let totalBagian = (al * 2) + ap; let perBagian = sisa / totalBagian; porsi.push({n:`Anak Lk (${al} org)`, p: perBagian * 2 * al, perOrg: perBagian * 2}); if(ap > 0) porsi.push({n:`Anak Pr (${ap} org)`, p: perBagian * ap, perOrg: perBagian}); } else if (ap > 0) { let p = (ap === 1) ? 1/2 : 2/3; if(p > sisa) p = sisa;  porsi.push({n:`Anak Pr (${ap} org)`, p:p, perOrg: p/ap}); sisa -= p; if(sisa > 0.001 && bapak) { let bItem = porsi.find(x => x.n === 'Bapak'); if(bItem) bItem.p += sisa; } } else if (bapak) { let bItem = porsi.find(x => x.n === 'Bapak'); if(bItem) bItem.p += sisa; } } const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits:0 }).format(num); const formatPecahan = (dec) => { if(Math.abs(dec - 1/8) < 0.01) return "1/8"; if(Math.abs(dec - 1/6) < 0.01) return "1/6"; if(Math.abs(dec - 1/4) < 0.01) return "1/4"; if(Math.abs(dec - 1/3) < 0.01) return "1/3"; if(Math.abs(dec - 1/2) < 0.01) return "1/2"; if(Math.abs(dec - 2/3) < 0.01) return "2/3"; return (dec * 100).toFixed(1) + "%"; }; let html = `<h5 class="font-black text-emerald-900 mb-3 border-b border-emerald-300 pb-2">Hasil Perhitungan</h5>`; if(porsi.length === 0) { html += `<p class="text-sm text-rose-600 font-bold">Tidak ada ahli waris yang memenuhi syarat.</p>`; } else { porsi.forEach(item => { let nominal = item.p * total; html += `<div class="mb-2"><div class="flex justify-between items-end"><span class="font-bold text-slate-700">${item.n} <span class="text-xs text-emerald-600 bg-emerald-100 px-1 rounded ml-1">${formatPecahan(item.p)}</span></span><span class="font-black text-emerald-700 text-lg">${formatRp(nominal)}</span></div>${item.perOrg ? `<p class="text-[10px] text-slate-500 text-right">@ ${formatRp(item.perOrg * total)} / orang</p>` : ''}</div>`; }); } const hasilDiv = document.getElementById('waris-hasil'); hasilDiv.innerHTML = html; hasilDiv.classList.remove('hidden'); hasilDiv.scrollIntoView({ behavior: 'smooth' }); };
 
-  window.hitungWaris = function() {
-    const totalInput = document.getElementById('waris-total').value;
-    if(!totalInput || totalInput <= 0) return toastWarning('Masukkan total harta yang valid!');
-    const total = parseFloat(totalInput);
-    
-    const psg = document.getElementById('waris-pasangan').value;
-    const al = parseInt(document.getElementById('waris-al').value) || 0;
-    const ap = parseInt(document.getElementById('waris-ap').value) || 0;
-    const bapak = document.getElementById('waris-bapak').checked;
-    const ibu = document.getElementById('waris-ibu').checked;
-    
-    let hasAnak = (al > 0 || ap > 0);
-    let porsi = [];
-    let sisa = 1.0; 
+  // --- BOOT & PWA ---
+  function bootApp() { loadDashboardStats(); loadGenerasiDropdown(); initializeTree(); setTimeout(() => { const overlay = document.getElementById('loading-overlay'); if (overlay) { overlay.style.opacity = '0'; setTimeout(() => overlay.style.display = 'none', 500); } }, 1500); }
 
-    if(psg === 'suami') { let p = hasAnak ? 1/4 : 1/2; porsi.push({n:'Suami', p:p}); sisa -= p; }
-    else if(psg.startsWith('istri')) { 
-      let jml = parseInt(psg.replace('istri',''));
-      let p = hasAnak ? 1/8 : 1/4; 
-      porsi.push({n:`Istri (${jml} org)`, p:p, perOrg: p/jml}); sisa -= p; 
-    }
-
-    if(ibu) { let p = hasAnak ? 1/6 : 1/3; porsi.push({n:'Ibu', p:p}); sisa -= p; }
-    if(bapak) { let p = 1/6; porsi.push({n:'Bapak', p:p}); sisa -= p; } 
-
-    if(sisa < 0) {
-      let totalP = porsi.reduce((sum, item) => sum + item.p, 0);
-      porsi.forEach(item => item.p = item.p / totalP);
-      sisa = 0;
-    }
-
-    if(sisa > 0) {
-      if(al > 0) {
-        let totalBagian = (al * 2) + ap;
-        let perBagian = sisa / totalBagian;
-        porsi.push({n:`Anak Lk (${al} org)`, p: perBagian * 2 * al, perOrg: perBagian * 2});
-        if(ap > 0) porsi.push({n:`Anak Pr (${ap} org)`, p: perBagian * ap, perOrg: perBagian});
-      } else if (ap > 0) {
-        let p = (ap === 1) ? 1/2 : 2/3;
-        if(p > sisa) p = sisa; 
-        porsi.push({n:`Anak Pr (${ap} org)`, p:p, perOrg: p/ap});
-        sisa -= p;
-        if(sisa > 0.001 && bapak) {
-          let bItem = porsi.find(x => x.n === 'Bapak');
-          if(bItem) bItem.p += sisa;
-        }
-      } else if (bapak) {
-        let bItem = porsi.find(x => x.n === 'Bapak');
-        if(bItem) bItem.p += sisa;
-      }
-    }
-
-    const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits:0 }).format(num);
-    const formatPecahan = (dec) => {
-      if(Math.abs(dec - 1/8) < 0.01) return "1/8";
-      if(Math.abs(dec - 1/6) < 0.01) return "1/6";
-      if(Math.abs(dec - 1/4) < 0.01) return "1/4";
-      if(Math.abs(dec - 1/3) < 0.01) return "1/3";
-      if(Math.abs(dec - 1/2) < 0.01) return "1/2";
-      if(Math.abs(dec - 2/3) < 0.01) return "2/3";
-      return (dec * 100).toFixed(1) + "%";
-    };
-
-    let html = `<h5 class="font-black text-emerald-900 mb-3 border-b border-emerald-300 pb-2">Hasil Perhitungan</h5>`;
-    if(porsi.length === 0) {
-      html += `<p class="text-sm text-rose-600 font-bold">Tidak ada ahli waris yang memenuhi syarat.</p>`;
+  let deferredPrompt;
+  function initPWA() {
+    const pwaContainer = document.getElementById('pwa-install-container'); const pwaBtn = document.getElementById('pwa-install-btn'); const pwaText = document.getElementById('pwa-btn-text'); const pwaIcon = document.getElementById('pwa-icon');
+    if (!pwaContainer || !pwaBtn) return;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone) { pwaContainer.classList.add('hidden'); return; }
+    pwaContainer.classList.remove('hidden');
+    if (isIOS) {
+      pwaText.textContent = "Install di iOS (Safari)"; pwaIcon.className = "fab fa-apple text-lg text-slate-500";
+      pwaBtn.onclick = () => { Swal.fire({ title: 'Pasang di Layar Utama', html: `Untuk menginstal di perangkat Apple:<br><br>1. Tap ikon <b>Share</b> <i class="fas fa-share-square text-blue-500 mx-1"></i> di menu bawah browser.<br>2. Gulir ke bawah dan pilih <b>"Add to Home Screen"</b> <i class="fas fa-plus-square text-slate-500 mx-1"></i>.`, icon: 'info', confirmButtonText: 'Mengerti', confirmButtonColor: '#10b981', customClass: { popup: 'rounded-3xl text-left' } }); };
     } else {
-      porsi.forEach(item => {
-        let nominal = item.p * total;
-        html += `
-          <div class="mb-2">
-            <div class="flex justify-between items-end">
-              <span class="font-bold text-slate-700">${item.n} <span class="text-xs text-emerald-600 bg-emerald-100 px-1 rounded ml-1">${formatPecahan(item.p)}</span></span>
-              <span class="font-black text-emerald-700 text-lg">${formatRp(nominal)}</span>
-            </div>
-            ${item.perOrg ? `<p class="text-[10px] text-slate-500 text-right">@ ${formatRp(item.perOrg * total)} / orang</p>` : ''}
-          </div>
-        `;
-      });
+      window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; pwaText.textContent = "Install Aplikasi PWA"; pwaIcon.className = "fab fa-google-play text-lg text-brand-500"; });
+      pwaBtn.onclick = async () => {
+        if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') { pwaContainer.classList.add('hidden'); } deferredPrompt = null; } 
+        else { Swal.fire({ title: 'Syarat PWA Belum Lengkap', html: 'Website Anda <b>wajib memiliki file <code>manifest.json</code></b> dan HTTPS yang valid agar popup otomatis muncul di Android.', icon: 'info', confirmButtonColor: '#10b981', customClass: { popup: 'rounded-3xl' } }); }
+      };
     }
-    
-    const hasilDiv = document.getElementById('waris-hasil');
-    hasilDiv.innerHTML = html;
-    hasilDiv.classList.remove('hidden');
-    hasilDiv.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  // Fungsi bootApp dipanggil setelah login berhasil atau sesi valid
-  function bootApp() {
-    loadDashboardStats();
-    loadGenerasiDropdown();
-    initializeTree();
-    
-    // Jika fungsi pencarian tersedia, jalankan
-    if (typeof initSearch === "function") {
-      initSearch();
-    }
-
-    // Hilangkan layar pemuatan setelah 1.5 detik
-    setTimeout(() => {
-      const overlay = document.getElementById('loading-overlay');
-      if (overlay) {
-        overlay.style.opacity = '0';
-        setTimeout(() => overlay.style.display = 'none', 500);
-      }
-    }, 1500);
   }
-
-  // Panggil initPWA jika functionnya sudah diinisialisasi
-  if (typeof initPWA === "function") initPWA();
-  
-  window.addEventListener('appinstalled', () => { 
-    const pwaContainer = document.getElementById('pwa-install-container');
-    if(pwaContainer) pwaContainer.classList.add('hidden'); 
-  });
+  initPWA(); window.addEventListener('appinstalled', () => { const pwaContainer = document.getElementById('pwa-install-container'); if(pwaContainer) pwaContainer.classList.add('hidden'); });
 
 </script>
 </body>
