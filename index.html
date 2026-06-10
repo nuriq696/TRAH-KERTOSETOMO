@@ -472,7 +472,8 @@
     if (!window.google) window.google = {};
     if (!window.google.script) window.google.script = {};
 
-    const dummyTreeData = {
+    let cachedTree = localStorage.getItem('silsilah_mock_tree');
+    const dummyTreeData = cachedTree ? JSON.parse(cachedTree) : {
       id: "root-1", nama: "Kakek Buyut", generasi: "Generasi 1", gender: "L", status: "Almarhum", pasangan: "Nenek Buyut",
       children: [
         { id: "child-1", nama: "Budi Santoso", generasi: "Generasi 2", gender: "L", status: "Hidup", pasangan: "Siti Rahma", 
@@ -488,6 +489,8 @@
         }
       ]
     };
+
+    function saveMockTree() { localStorage.setItem('silsilah_mock_tree', JSON.stringify(dummyTreeData)); }
 
     class MockRunner {
       constructor(successCb = null, errorCb = null) {
@@ -540,6 +543,7 @@
                  if (n._children) n._children.forEach(updateNode);
                }
                updateNode(dummyTreeData);
+               saveMockTree();
                this.successCb({success: true, message: 'Data Dummy berhasil diperbarui!'});
             } else {
                // Tambah Node Baru
@@ -572,6 +576,7 @@
                  addChildNode(dummyTreeData);
                }
 
+               saveMockTree();
                if(ditambahkan) {
                  this.successCb({success: true, message: 'Data Dummy baru berhasil ditambahkan ke Pohon!'});
                } else {
@@ -627,6 +632,7 @@
                return false;
             }
             removeNode(dummyTreeData);
+            saveMockTree();
             this.successCb({success: true, message: 'Anggota berhasil dihapus.'}); 
           } 
         }, 500); 
